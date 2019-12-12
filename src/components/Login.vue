@@ -7,15 +7,20 @@
             </div>
             <!-- 表单区域 -->
             <el-form class="form_box"
-                v-model="loginForm">
+                v-model="loginForm"
+                :rules="loginFormRules">
                 <!-- 账户 -->
-                <el-form-item class="input_box">
+                <el-form-item
+                    class="input_box"
+                    prop="username">
                     <el-input
                         prefix-icon="iconfont iconwode"
                         v-model="loginForm.username"></el-input>
                 </el-form-item>
                 <!-- 密码 -->
-                <el-form-item class="input_box">
+                <el-form-item
+                    class="input_box"
+                    prop="password">
                     <el-input
                         prefix-icon="iconfont iconkucunchaxun1"
                         v-model="loginForm.password"
@@ -39,6 +44,17 @@ export default {
       loginForm: {
         username: 'ss',
         password: '123'
+      },
+      // 表单数据验证规则
+      loginFormRules: {
+        username: [
+          { required: true, message: '请输入登录名称', trigger: 'blur' },
+          { min: 6, max: 10, message: '长度在 6 到 10 个字符', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '请输入登录密码', trigger: 'blur' },
+          { min: 6, max: 12, message: '长度在 6 到 12 个字符', trigger: 'blur' }
+        ]
       }
 
     }
