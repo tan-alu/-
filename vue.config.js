@@ -2,7 +2,7 @@ module.exports = {
     devServer : {
         // 自动打开浏览器
         open:true,
-        port:8878
+        port:8888
     },
     chainWebpack: config => {
         config.module

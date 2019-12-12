@@ -43,8 +43,8 @@ export default {
     return {
       // 表单的数据
       loginForm: {
-        username: '77',
-        password: '999'
+        username: '',
+        password: ''
       },
       // 表单数据验证规则
       loginFormRules: {
@@ -69,8 +69,12 @@ export default {
     },
     // 登录
     login () {
-      this.$refs.loginFormRef.validate(val => {
-        console.log(val)
+      // 预验证
+      this.$refs.loginFormRef.validate(async valid => {
+        // console.log(valid)
+        if (!valid) return
+        const result = await this.$http.post('login', this.loginForm)
+        console.log(result)
       })
     }
   }
