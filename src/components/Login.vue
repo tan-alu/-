@@ -29,7 +29,7 @@
                 </el-form-item>
                 <!-- 按钮 -->
                 <el-form-item class="button_box">
-                    <el-button type="primary" size="small">登陆</el-button>
+                    <el-button type="primary" size="small" @click="login">登陆</el-button>
                     <el-button type="info" size="small" @click="reset">重置</el-button>
                 </el-form-item>
             </el-form>
@@ -66,6 +66,12 @@ export default {
     //   console.log(this)
       // 重置表单数据
       this.$refs.loginFormRef.resetFields()
+    },
+    // 登录
+    login () {
+      this.$refs.loginFormRef.validate(val => {
+        console.log(val)
+      })
     }
   }
 
