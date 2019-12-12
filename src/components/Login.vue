@@ -6,14 +6,20 @@
                 <img src="../assets/logo.jpg" alt="">
             </div>
             <!-- 表单区域 -->
-            <el-form class="form_box">
+            <el-form class="form_box"
+                v-model="loginForm">
                 <!-- 账户 -->
                 <el-form-item class="input_box">
-                    <el-input></el-input>
+                    <el-input
+                        prefix-icon="iconfont iconwode"
+                        v-model="loginForm.username"></el-input>
                 </el-form-item>
                 <!-- 密码 -->
                 <el-form-item class="input_box">
-                    <el-input></el-input>
+                    <el-input
+                        prefix-icon="iconfont iconkucunchaxun1"
+                        v-model="loginForm.password"
+                        type="password"></el-input>
                 </el-form-item>
                 <!-- 按钮 -->
                 <el-form-item class="button_box">
@@ -21,13 +27,22 @@
                     <el-button type="info" size="small">重置</el-button>
                 </el-form-item>
             </el-form>
-
         </div>
     </div>
 </template>
 
 <script>
 export default {
+  data () {
+    return {
+      // 表单的数据
+      loginForm: {
+        username: 'ss',
+        password: '123'
+      }
+
+    }
+  }
 
 }
 </script>
