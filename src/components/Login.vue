@@ -6,9 +6,19 @@
                 <img src="../assets/logo.jpg" alt="">
             </div>
             <!-- 表单区域 -->
-            <el-form>
-                <el-form-item label="密码" prop="pass">
-                    <!-- <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input> -->
+            <el-form class="form_box">
+                <!-- 账户 -->
+                <el-form-item class="input_box">
+                    <el-input></el-input>
+                </el-form-item>
+                <!-- 密码 -->
+                <el-form-item class="input_box">
+                    <el-input></el-input>
+                </el-form-item>
+                <!-- 按钮 -->
+                <el-form-item class="button_box">
+                    <el-button type="primary" size="small">登陆</el-button>
+                    <el-button type="info" size="small">重置</el-button>
                 </el-form-item>
             </el-form>
 
@@ -53,7 +63,27 @@ export default {
             border-radius: 50%;
             background-color: #eee;
         }
+    }
 }
+.form_box {
+    width: 100%;
+    height: 200px;
+    position:absolute;
+    bottom:0;
+
+    .input_box{
+        width: 100%;
+        padding:0 20px;
+        box-sizing: border-box;
+    }
+
+    .button_box{
+        position: absolute;
+        right: 0;
+        padding:0 20px;
+        box-sizing: border-box;
+
+    }
 }
 
 </style>
