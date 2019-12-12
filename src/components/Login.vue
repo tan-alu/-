@@ -7,8 +7,9 @@
             </div>
             <!-- 表单区域 -->
             <el-form class="form_box"
-                v-model="loginForm"
-                :rules="loginFormRules">
+                :model="loginForm"
+                :rules="loginFormRules"
+                ref="loginFormRef">
                 <!-- 账户 -->
                 <el-form-item
                     class="input_box"
@@ -29,7 +30,7 @@
                 <!-- 按钮 -->
                 <el-form-item class="button_box">
                     <el-button type="primary" size="small">登陆</el-button>
-                    <el-button type="info" size="small">重置</el-button>
+                    <el-button type="info" size="small" @click="reset">重置</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -42,14 +43,14 @@ export default {
     return {
       // 表单的数据
       loginForm: {
-        username: 'ss',
-        password: '123'
+        username: '77',
+        password: '999'
       },
       // 表单数据验证规则
       loginFormRules: {
         username: [
           { required: true, message: '请输入登录名称', trigger: 'blur' },
-          { min: 6, max: 10, message: '长度在 6 到 10 个字符', trigger: 'blur' }
+          { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
         ],
         password: [
           { required: true, message: '请输入登录密码', trigger: 'blur' },
@@ -57,6 +58,14 @@ export default {
         ]
       }
 
+    }
+  },
+  methods: {
+    // 重置
+    reset () {
+    //   console.log(this)
+      // 重置表单数据
+      this.$refs.loginFormRef.resetFields()
     }
   }
 
