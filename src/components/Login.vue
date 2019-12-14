@@ -43,8 +43,8 @@ export default {
     return {
       // 表单的数据
       loginForm: {
-        username: '',
-        password: ''
+        username: 'admin',
+        password: '123456'
       },
       // 表单数据验证规则
       loginFormRules: {
@@ -73,8 +73,17 @@ export default {
       this.$refs.loginFormRef.validate(async valid => {
         // console.log(valid)
         if (!valid) return
-        const result = await this.$http.post('login', this.loginForm)
-        console.log(result)
+        const { data: res } = await this.$http.post('login', this.loginForm)
+        // console.log(res)
+        // 判断登录是否成功
+        if (res.meta.status !== 200) return this.$message.error('登录失败')
+        // console.log('登录成功')
+        this.$message.success('登录成功')
+        console.log(res)
+        // 将token值保存到sessionStorage里面
+        window.sessionStorage.setItem('token', res.data.token)
+        // 跳转页面Home
+        this.$router.push('/home')
       })
     }
   }
