@@ -7,7 +7,8 @@
         background-color="rgba(0,0,0,0)"
         text-color="salmon"
         active-text-color="#ffd04b">
-        <el-submenu index="1"
+        <el-submenu
+            :index="item.id + ''"
             v-for="item in menulist"
             :key="item.id">
             <!-- 一级菜单 -->
@@ -16,10 +17,13 @@
                 <span>{{item.authName}}</span>
             </template>
             <!-- 二级菜单 -->
-            <el-submenu index="1-4-1">
+            <el-submenu
+                index="1-4-1"
+                v-for="subItem in item.children"
+                :key="subItem.id">
                 <template slot="title">
                     <i class="el-icon-location"></i>
-                    <span>导航一</span>
+                    <span>{{subItem.authName}}</span>
                 </template>
             </el-submenu>
         </el-submenu>
