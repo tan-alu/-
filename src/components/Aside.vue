@@ -1,6 +1,6 @@
 // 侧边栏
 <template>
-<el-aside :width="isCollapse ? '64px':'200px'" class="menu">
+<el-aside :width="isCollapse ? '64px':'200px'" >
     <div class="toggle_box" @click="Collapse">|||</div>
     <!-- 导航 -->
     <el-menu
@@ -68,7 +68,7 @@ export default {
     // 菜单是否折叠
     Collapse () {
       this.isCollapse = !this.isCollapse
-      console.log(this.isCollapse)
+    //   console.log(this.isCollapse)
     }
 
   }
@@ -77,7 +77,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .iconfont{
-    padding-right:10px;
+    padding-right:20px;
     color: salmon;
 }
 .el-menu{
@@ -92,8 +92,5 @@ export default {
   cursor: pointer;
   border:1px solid salmon;
 }
-// .menu{
-//     width: 200px;
-// }
 
 </style>

@@ -11,11 +11,12 @@
     <!-- 页面主体 -->
     <el-container>
         <!-- 左侧 -->
-        <!-- <el-aside :width="isCollapse ? '64px':'200px'"> -->
-          <a-side></a-side>
-        <!-- </el-aside> -->
+        <a-side></a-side>
         <!-- 内容中心 -->
-        <el-main>Main</el-main>
+        <el-main>
+          <!-- 路由占位符 -->
+          <router-view></router-view>
+        </el-main>
     </el-container>
 </el-container>
 </template>
