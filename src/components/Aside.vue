@@ -7,19 +7,20 @@
         background-color="rgba(0,0,0,0)"
         text-color="salmon"
         active-text-color="#ffd04b">
-        <el-submenu index="1">
+        <el-submenu index="1"
+            v-for="item in menulist"
+            :key="item.id">
             <!-- 一级菜单 -->
             <template slot="title">
                 <i class="el-icon-location"></i>
-                <span>导航一</span>
+                <span>{{item.authName}}</span>
             </template>
             <!-- 二级菜单 -->
-            <el-submenu index="1-4">
+            <el-submenu index="1-4-1">
                 <template slot="title">
                     <i class="el-icon-location"></i>
                     <span>导航一</span>
                 </template>
-                <!-- <el-menu-item index="1-4-1">选项1</el-menu-item> -->
             </el-submenu>
         </el-submenu>
     </el-menu>
@@ -27,6 +28,24 @@
 </template>
 <script>
 export default {
+  data () {
+    return {
+      menulist: []
+    }
+  },
+  created () {
+    this.getList()
+  },
+  methods: {
+    //   获取菜单数据
+    async getList () {
+      const { data: res } = await this.$http.get('menus')
+      console.log(res)
+      if (res.meta.status !== 200) return this.$message.error(res.data.msg)
+      this.menulist = res.data
+    }
+
+  }
 
 }
 </script>
