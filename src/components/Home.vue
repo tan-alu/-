@@ -11,7 +11,9 @@
     <!-- 页面主体 -->
     <el-container>
         <!-- 左侧 -->
-        <el-aside width="200px">Aside</el-aside>
+        <el-aside width="200px">
+            <a-side></a-side>
+        </el-aside>
         <!-- 内容中心 -->
         <el-main>Main</el-main>
     </el-container>
@@ -19,11 +21,16 @@
 </template>
 
 <script>
+// 导入侧边栏
+import aSide from '../components/Aside'
 export default {
   data () {
     return {
 
     }
+  },
+  components: {
+    aSide
   },
   methods: {
     // 退出

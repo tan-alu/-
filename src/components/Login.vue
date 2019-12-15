@@ -79,7 +79,7 @@ export default {
         if (res.meta.status !== 200) return this.$message.error('登录失败')
         // console.log('登录成功')
         this.$message.success('登录成功')
-        console.log(res)
+        // console.log(res)
         // 将token值保存到sessionStorage里面
         window.sessionStorage.setItem('token', res.data.token)
         // 跳转页面Home
