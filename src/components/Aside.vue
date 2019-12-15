@@ -1,11 +1,16 @@
 // 侧边栏
 <template>
+<el-aside :width="isCollapse ? '64px':'200px'" class="menu">
+    <div class="toggle_box" @click="Collapse">|||</div>
     <!-- 导航 -->
     <el-menu
         background-color="rgba(0,0,0,0)"
         text-color="salmon"
         active-text-color="#409EFF"
-        unique-opened="true">
+        unique-opened
+        :collapse="isCollapse"
+        :collapse-transition="false"
+        >
         <!-- 一级菜单 -->
         <el-submenu
             :index="item.id + ''"
@@ -29,7 +34,7 @@
             </el-submenu>
         </el-submenu>
     </el-menu>
-
+</el-aside>
 </template>
 <script>
 export default {
@@ -44,9 +49,9 @@ export default {
         '103': 'iconfont iconkucunchaxun1',
         '102': 'iconfont iconguadan',
         '145': 'iconfont iconbaobiao'
-
-      }
-
+      },
+      //   菜单是否折叠
+      isCollapse: false
     }
   },
   created () {
@@ -59,6 +64,11 @@ export default {
       console.log(res)
       if (res.meta.status !== 200) return this.$message.error(res.data.msg)
       this.menulist = res.data
+    },
+    // 菜单是否折叠
+    Collapse () {
+      this.isCollapse = !this.isCollapse
+      console.log(this.isCollapse)
     }
 
   }
@@ -67,11 +77,23 @@ export default {
 </script>
 <style lang="less" scoped>
 .iconfont{
-    padding-right:20px;
+    padding-right:10px;
     color: salmon;
 }
 .el-menu{
     border-right:0
 }
+.toggle_box{
+  // background-color: #fff;
+  text-align: center;
+  font-size:10px;
+  line-height: 24px;
+  letter-spacing: .2em;
+  cursor: pointer;
+  border:1px solid salmon;
+}
+// .menu{
+//     width: 200px;
+// }
 
 </style>

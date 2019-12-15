@@ -11,9 +11,9 @@
     <!-- 页面主体 -->
     <el-container>
         <!-- 左侧 -->
-        <el-aside width="200px">
-            <a-side></a-side>
-        </el-aside>
+        <!-- <el-aside :width="isCollapse ? '64px':'200px'"> -->
+          <a-side></a-side>
+        <!-- </el-aside> -->
         <!-- 内容中心 -->
         <el-main>Main</el-main>
     </el-container>
@@ -21,11 +21,12 @@
 </template>
 
 <script>
-// 导入侧边栏
+// 导入左侧菜单
 import aSide from '../components/Aside'
 export default {
   data () {
     return {
+      isCollapse: false
 
     }
   },
@@ -38,6 +39,7 @@ export default {
       window.sessionStorage.clear('token')
       this.$router.push('/login')
     }
+
   }
 
 }
@@ -69,10 +71,11 @@ export default {
     }
 
 }
-.el-aside{
-    background-color: pink;
-}
+// .el-aside{
+//     background-color: pink;
+// }
 .el-main{
     background-color: #eee;
 }
+
 </style>
