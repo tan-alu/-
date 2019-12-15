@@ -2,18 +2,16 @@
 <template>
     <!-- 导航 -->
     <el-menu
-        default-active="2"
-        class="el-menu-vertical-demo"
         background-color="rgba(0,0,0,0)"
         text-color="salmon"
-        active-text-color="#ffd04b">
+        active-text-color="#409EFF">
+        <!-- 一级菜单 -->
         <el-submenu
             :index="item.id + ''"
             v-for="item in menulist"
             :key="item.id">
-            <!-- 一级菜单 -->
             <template slot="title">
-                <i class="el-icon-location"></i>
+                <i :class="iconObj[item.id]"></i>
                 <span>{{item.authName}}</span>
             </template>
             <!-- 二级菜单 -->
@@ -22,7 +20,9 @@
                 v-for="subItem in item.children"
                 :key="subItem.id">
                 <template slot="title">
-                    <i class="el-icon-location"></i>
+                    <!-- 图标 -->
+                    <i class="el-icon-menu"></i>
+                    <!-- 文字 -->
                     <span>{{subItem.authName}}</span>
                 </template>
             </el-submenu>
@@ -34,7 +34,18 @@
 export default {
   data () {
     return {
-      menulist: []
+      // 菜单列表数据
+      menulist: [],
+      // 一级菜单图标
+      iconObj: {
+        '125': 'iconfont iconwode',
+        '101': 'iconfont icontouxiang',
+        '103': 'iconfont iconkucunchaxun1',
+        '102': 'iconfont iconguadan',
+        '145': 'iconfont iconbaobiao'
+
+      }
+
     }
   },
   created () {
@@ -54,5 +65,9 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+.iconfont{
+    padding-right:20px;
+    color: salmon;
+}
 
 </style>
