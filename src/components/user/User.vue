@@ -22,6 +22,32 @@
             <el-button>添加用户</el-button>
           </el-col>
         </el-row>
+        <!-- 用户表格 -->
+            <el-table
+              :data="userList"
+              style="width: 100%">
+              <el-table-column type="index">
+              </el-table-column>
+              <el-table-column prop="username" label="姓名">
+              </el-table-column>
+              <el-table-column prop="email" label="邮箱">
+              </el-table-column>
+              <el-table-column prop="mobile" label="电话">
+              </el-table-column>
+              <el-table-column prop="role_name" label="角色">
+              </el-table-column>
+              <el-table-column  prop="mg_state" label="状态">
+                <el-switch v-model="value1">
+                  <!-- <template slot-scope="scope"> -->
+
+                  <!-- </template> -->
+                </el-switch>
+              </el-table-column>
+              <el-table-column prop="address" label="操作">
+
+              </el-table-column>
+          </el-table>
+
       </el-card>
       <!-- 分页 -->
     </div>
@@ -37,7 +63,8 @@ export default {
         'pagesize': 2
       },
       userList: [],
-      total: 0
+      total: 0,
+      value1: true
     }
   },
   created () {
