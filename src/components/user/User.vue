@@ -31,8 +31,30 @@
 export default {
   data () {
     return {
-
+      queryInfo: {
+        'query': '',
+        'pagenum': 1,
+        'pagesize': 2
+      },
+      userList: [],
+      total: 0
     }
+  },
+  created () {
+    this.getList()
+  },
+  methods: {
+    // 获取用户列表
+    async getList () {
+      const { data: res } = await this.$http.get('users', { params: this.queryInfo })
+      console.log(res)
+      if (res.meta.status !== 200) {
+        return this.$message.error('获取用户列表失败')
+      }
+      this.userList = res.data.users
+      this.total = res.data.total
+    }
+
   }
 
 }
