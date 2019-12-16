@@ -44,20 +44,26 @@
                   <el-switch v-model="scope.row.mg_state"></el-switch>
                 </template>
               </el-table-column>
-              <el-table-column  label="操作">
-                <!-- <template slot-scope="scope"> -->
+              <el-table-column  label="操作" width="180">
+                <template slot-scope="scope">
+                  {{scope.row}}
                 <el-row :gutter="20">
+                  <!-- 修改 -->
                   <el-col :span="8">
                     <el-button type="primary" size="mini" icon="el-icon-edit"></el-button>
                   </el-col>
+                  <!-- 删除 -->
                   <el-col :span="8">
                     <el-button type="danger" size="mini" icon="el-icon-delete"></el-button>
                   </el-col>
+                  <!-- 分配角色 -->
                   <el-col :span="8">
-                    <el-button type="warning" size="mini" icon="el-icon-setting"></el-button>
+                    <el-tooltip effect="dark" content="分配角色" placement="top" :enterable="false">
+                      <el-button type="warning" size="mini" icon="el-icon-setting"></el-button>
+                    </el-tooltip>
                   </el-col>
                 </el-row>
-                <!-- </template> -->
+                </template>
               </el-table-column>
           </el-table>
         <!-- 分页 -->
