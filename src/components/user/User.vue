@@ -25,7 +25,9 @@
         <!-- 用户表格 -->
             <el-table
               :data="userList"
-              style="width: 100%">
+              style="width: 100%"
+              stripe
+              border>
               <el-table-column type="index">
               </el-table-column>
               <el-table-column prop="username" label="姓名">
@@ -37,13 +39,12 @@
               <el-table-column prop="role_name" label="角色">
               </el-table-column>
               <el-table-column  prop="mg_state" label="状态">
-                <el-switch v-model="value1">
-                  <!-- <template slot-scope="scope"> -->
-
-                  <!-- </template> -->
-                </el-switch>
+                <template slot-scope="scope">
+                  <!-- {{scope.row}} -->
+                  <el-switch v-model="scope.row.mg_state"></el-switch>
+                </template>
               </el-table-column>
-              <el-table-column prop="address" label="操作">
+              <el-table-column  label="操作">
 
               </el-table-column>
           </el-table>
@@ -63,8 +64,8 @@ export default {
         'pagesize': 2
       },
       userList: [],
-      total: 0,
-      value1: true
+      total: 0
+      // value1: true
     }
   },
   created () {
