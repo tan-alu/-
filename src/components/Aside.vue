@@ -1,40 +1,38 @@
 // 侧边栏
 <template>
-<el-aside :width="isCollapse ? '64px':'200px'" >
-    <div class="toggle_box" @click="Collapse">|||</div>
-    <!-- 导航 -->
-    <el-menu
-        background-color="rgba(0,0,0,0)"
+  <el-aside :width="isCollapse ? '64px':'200px'" >
+      <div class="toggle_box" @click="Collapse">|||</div>
+      <!-- 导航 -->
+      <el-menu
         text-color="salmon"
-        active-text-color="#409EFF"
-        unique-opened
+        active-text-color="#409BFF"
         :collapse="isCollapse"
         :collapse-transition="false"
+        unique-opened
+        router
         >
-        <!-- 一级菜单 -->
-        <el-submenu
-            :index="item.id + ''"
-            v-for="item in menulist"
-            :key="item.id">
-            <template slot="title">
-                <i :class="iconObj[item.id]"></i>
-                <span>{{item.authName}}</span>
-            </template>
-            <!-- 二级菜单 -->
-            <el-submenu
-                index="1-4-1"
-                v-for="subItem in item.children"
-                :key="subItem.id">
-                <template slot="title">
+          <!-- 一级菜单 -->
+          <el-submenu
+              :index="item.id + ''"
+              v-for="item in menulist"
+              :key="item.id">
+              <template slot="title">
+                  <i :class="iconObj[item.id]"></i>
+                  <span>{{item.authName}}</span>
+              </template>
+              <!-- 二级菜单 -->
+              <el-menu-item
+                  :index="'/' + subItem.path"
+                  v-for="subItem in item.children"
+                  :key="subItem.id">
                     <!-- 图标 -->
                     <i class="el-icon-menu"></i>
                     <!-- 文字 -->
                     <span>{{subItem.authName}}</span>
-                </template>
-            </el-submenu>
-        </el-submenu>
-    </el-menu>
-</el-aside>
+              </el-menu-item>
+          </el-submenu>
+      </el-menu>
+  </el-aside>
 </template>
 <script>
 export default {
