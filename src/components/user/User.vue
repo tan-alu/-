@@ -45,8 +45,8 @@
                 </template>
               </el-table-column>
               <el-table-column  label="操作" width="180">
-                <template slot-scope="scope">
-                  {{scope.row}}
+                <!-- <template slot-scope="scope"> -->
+                  <!-- {{scope.row}} -->
                 <el-row :gutter="20">
                   <!-- 修改 -->
                   <el-col :span="8">
@@ -63,16 +63,18 @@
                     </el-tooltip>
                   </el-col>
                 </el-row>
-                </template>
+                <!-- </template> -->
               </el-table-column>
           </el-table>
         <!-- 分页 -->
         <el-pagination
-          :current-page="currentPage4"
-          :page-sizes="[10,20,30]"
-          :page-size="100"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="queryInfo.pagenum"
+          :page-sizes="[1,2,5,10]"
+          :page-size="queryInfo.pagesize"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="400">
+          :total="total">
         </el-pagination>
       </el-card>
     </div>
@@ -84,7 +86,9 @@ export default {
     return {
       queryInfo: {
         'query': '',
+        // 当前页数
         'pagenum': 1,
+        // 当前显示多少条
         'pagesize': 2
       },
       userList: [],
@@ -106,6 +110,12 @@ export default {
       }
       this.userList = res.data.users
       this.total = res.data.total
+    },
+    handleSizeChange (val) {
+      console.log(`每页 ${val} 条`)
+    },
+    handleCurrentChange (val) {
+      console.log(`当前页: ${val}`)
     }
 
   }
