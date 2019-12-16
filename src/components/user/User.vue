@@ -23,7 +23,7 @@
           </el-col>
         </el-row>
         <!-- 用户表格 -->
-            <el-table
+          <el-table
               :data="userList"
               style="width: 100%"
               stripe
@@ -58,12 +58,17 @@
                   </el-col>
                 </el-row>
                 <!-- </template> -->
-
               </el-table-column>
           </el-table>
-
+        <!-- 分页 -->
+        <el-pagination
+          :current-page="currentPage4"
+          :page-sizes="[10,20,30]"
+          :page-size="100"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="400">
+        </el-pagination>
       </el-card>
-      <!-- 分页 -->
     </div>
 </template>
 
@@ -77,8 +82,9 @@ export default {
         'pagesize': 2
       },
       userList: [],
-      total: 0
-      // value1: true
+      total: 0,
+      currentPage4: 4
+
     }
   },
   created () {
