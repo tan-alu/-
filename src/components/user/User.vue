@@ -45,6 +45,19 @@
                 </template>
               </el-table-column>
               <el-table-column  label="操作">
+                <!-- <template slot-scope="scope"> -->
+                <el-row :gutter="20">
+                  <el-col :span="8">
+                    <el-button type="primary" size="mini" icon="el-icon-edit"></el-button>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-button type="danger" size="mini" icon="el-icon-delete"></el-button>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-button type="warning" size="mini" icon="el-icon-setting"></el-button>
+                  </el-col>
+                </el-row>
+                <!-- </template> -->
 
               </el-table-column>
           </el-table>
