@@ -9,6 +9,7 @@
         :collapse="isCollapse"
         :collapse-transition="false"
         unique-opened
+        :default-active="activePath"
         router
         >
           <!-- 一级菜单 -->
@@ -22,13 +23,14 @@
               </template>
               <!-- 二级菜单 -->
               <el-menu-item
-                  :index="'/' + subItem.path"
-                  v-for="subItem in item.children"
-                  :key="subItem.id">
-                    <!-- 图标 -->
-                    <i class="el-icon-menu"></i>
-                    <!-- 文字 -->
-                    <span>{{subItem.authName}}</span>
+                :index="'/' + subItem.path"
+                v-for="subItem in item.children"
+                :key="subItem.id"
+                @click="saveNav('/' + subItem.path)">
+                  <!-- 图标 -->
+                  <i class="el-icon-menu"></i>
+                  <!-- 文字 -->
+                  <span>{{subItem.authName}}</span>
               </el-menu-item>
           </el-submenu>
       </el-menu>
@@ -49,11 +51,14 @@ export default {
         '145': 'iconfont iconbaobiao'
       },
       //   菜单是否折叠
-      isCollapse: false
+      isCollapse: false,
+      // 点击的菜单路径
+      activePath: ''
     }
   },
   created () {
     this.getList()
+    this.activePath = window.sessionStorage.getItem('activePath')
   },
   methods: {
     //   获取菜单数据
@@ -67,6 +72,12 @@ export default {
     Collapse () {
       this.isCollapse = !this.isCollapse
     //   console.log(this.isCollapse)
+    },
+    // 保存二级菜单导航，高亮问题
+    saveNav (activePath) {
+      // 将点击的菜单路径保存到sessionStorage里
+      window.sessionStorage.setItem('activePath', activePath)
+      this.activePath = activePath
     }
 
   }
