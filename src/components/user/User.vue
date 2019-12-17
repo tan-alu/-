@@ -16,7 +16,8 @@
               placeholder="请输入内容"
               class="input-with-select"
               v-model="queryInfo.query"
-              clearable>
+              clearable
+              @clear="getList">
               <el-button slot="append" icon="el-icon-search" @click="getList"></el-button>
             </el-input>
           </el-col>
