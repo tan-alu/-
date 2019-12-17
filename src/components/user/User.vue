@@ -92,8 +92,7 @@ export default {
         'pagesize': 2
       },
       userList: [],
-      total: 0,
-      currentPage4: 4
+      total: 0
 
     }
   },
@@ -104,20 +103,24 @@ export default {
     // 获取用户列表
     async getList () {
       const { data: res } = await this.$http.get('users', { params: this.queryInfo })
-      console.log(res)
+      // console.log(res)
       if (res.meta.status !== 200) {
         return this.$message.error('获取用户列表失败')
       }
       this.userList = res.data.users
       this.total = res.data.total
     },
+    // 监听pagesize改变的事件
     handleSizeChange (val) {
-      console.log(`每页 ${val} 条`)
+      // console.log(`每页 ${val} 条`)
+      this.queryInfo.pagesize = val
+      this.getList()
     },
     handleCurrentChange (val) {
-      console.log(`当前页: ${val}`)
+      // console.log(`当前页: ${val}`)
+      this.queryInfo.pagenum = val
+      this.getList()
     }
-
   }
 
 }
