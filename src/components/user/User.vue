@@ -14,8 +14,9 @@
             <!-- 输入搜索框 -->
             <el-input
               placeholder="请输入内容"
-              class="input-with-select">
-              <el-button slot="append" icon="el-icon-search"></el-button>
+              class="input-with-select"
+              v-model="queryInfo.query">
+              <el-button slot="append" icon="el-icon-search" @click="getList"></el-button>
             </el-input>
           </el-col>
           <el-col :span="4">
@@ -81,7 +82,6 @@
 </template>
 
 <script>
-// import { userInfo } from 'os'
 export default {
   data () {
     return {
@@ -94,10 +94,6 @@ export default {
       },
       userList: [],
       total: 0
-      // userInfo:{
-      //  uId
-      // }
-
     }
   },
   created () {
@@ -136,6 +132,7 @@ export default {
       }
       this.$message.success('状态更新成功')
     }
+
   }
 }
 </script>
