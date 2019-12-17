@@ -18,11 +18,12 @@
               v-model="queryInfo.query"
               clearable
               @clear="getList">
+              <!-- 搜索按钮 -->
               <el-button slot="append" icon="el-icon-search" @click="getList"></el-button>
             </el-input>
           </el-col>
           <el-col :span="4">
-            <el-button>添加用户</el-button>
+            <el-button @click="dialogVisible=true">添加用户</el-button>
           </el-col>
         </el-row>
         <!-- 用户表格 -->
@@ -79,7 +80,33 @@
           layout="total, sizes, prev, pager, next, jumper"
           :total="total">
         </el-pagination>
+              <!-- 对话框 -->
+      <el-dialog
+        title="添加用户"
+        :visible.sync="dialogVisible"
+        width="50%"
+        >
+          <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="70px" class="demo-ruleForm">
+            <el-form-item label="用户名" prop="username">
+              <el-input v-model="addForm.username"></el-input>
+            </el-form-item>
+            <el-form-item label="密码" prop="password">
+              <el-input v-model="addForm.password"></el-input>
+            </el-form-item>
+            <el-form-item label="邮箱" prop="email">
+              <el-input v-model="addForm.email"></el-input>
+            </el-form-item>
+            <el-form-item label="手机" prop="mobile">
+              <el-input v-model="addForm.mobile"></el-input>
+            </el-form-item>
+          </el-form>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        </span>
+    </el-dialog>
       </el-card>
+
     </div>
 </template>
 
@@ -95,8 +122,23 @@ export default {
         'pagesize': 2
       },
       userList: [],
-      total: 0
+      total: 0,
+      dialogVisible: false,
+      addForm: {
+        username: ''
+      },
+      // 添加表单的验证规则
+      addFormRules: {
+        username: [
+          { required: true, message: '请输入用户名', trigger: 'blur' },
+          { min: 3, max: 10, message: '用户名长度在3到10个字之间', trigger: 'blur' }
+        ]
+      }
+
     }
+  },
+  components: {
+    // userDialog// 对话框
   },
   created () {
     this.getList()
