@@ -114,24 +114,24 @@
 export default {
   data () {
     // 验证邮箱的规则
-    var checkEmail = (rule, value, cb) => {
-      // 验证邮箱的正则表达式
-      const regEmail = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/
-      if (regEmail.test(value)) {
-        // 合法的邮箱
-        return cb()
-      }
-      cb(new Error('请输入合法的邮箱'))
-    },
-    //验证手机号的规则
-    var checkMobile = (rule,value,cb)=>{
-      //验证手机号的正则表达式
-      const regMobile = /^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/
-      if(regMobile.test(value)){
-        return cb();
-      }
-      cb(new Error('请输入合法的手机号'))
-    }
+    // var checkEmail = (rule, value, cb) => {
+    //   // 验证邮箱的正则表达式
+    //   const regEmail = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/
+    //   if (regEmail.test(value)) {
+    //     // 合法的邮箱
+    //     return cb()
+    //   }
+    //   cb(new Error('请输入合法的邮箱'))
+    // }
+    // // 验证手机号的规则
+    // var checkMobile = (rule, value, cb) => {
+    //   // 验证手机号的正则表达式
+    //   const regMobile = /^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/
+    //   if (regMobile.test(value)) {
+    //     return cb()
+    //   }
+    //   cb(new Error('请输入合法的手机号'))
+    // }
     return {
       queryInfo: {
         'query': '',
@@ -144,11 +144,27 @@ export default {
       total: 0,
       dialogVisible: false,
       addForm: {
-        username: ''
+        username: '',
+        password: '',
+        email: '',
+        mobile: ''
+
       },
       // 添加表单的验证规则
       addFormRules: {
         username: [
+          { required: true, message: '请输入用户名', trigger: 'blur' },
+          { min: 3, max: 10, message: '用户名长度在3到10个字之间', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '请输入用户名', trigger: 'blur' },
+          { min: 3, max: 10, message: '用户名长度在3到10个字之间', trigger: 'blur' }
+        ],
+        email: [
+          { required: true, message: '请输入用户名', trigger: 'blur' },
+          { min: 3, max: 10, message: '用户名长度在3到10个字之间', trigger: 'blur' }
+        ],
+        mobile: [
           { required: true, message: '请输入用户名', trigger: 'blur' },
           { min: 3, max: 10, message: '用户名长度在3到10个字之间', trigger: 'blur' }
         ]
