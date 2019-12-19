@@ -85,8 +85,9 @@
         title="添加用户"
         :visible.sync="dialogVisible"
         width="50%"
+        @close="addDiaglogClosed"
         >
-          <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="70px" class="demo-ruleForm">
+          <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="70px" >
             <el-form-item label="用户名" prop="username">
               <el-input v-model="addForm.username"></el-input>
             </el-form-item>
@@ -132,6 +133,7 @@ export default {
     //   }
     //   cb(new Error('请输入合法的手机号'))
     // }
+
     return {
       queryInfo: {
         'query': '',
@@ -157,16 +159,17 @@ export default {
           { min: 3, max: 10, message: '用户名长度在3到10个字之间', trigger: 'blur' }
         ],
         password: [
-          { required: true, message: '请输入用户名', trigger: 'blur' },
-          { min: 3, max: 10, message: '用户名长度在3到10个字之间', trigger: 'blur' }
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { min: 6, max: 15, message: '用户名长度在6到15个字之间', trigger: 'blur' }
         ],
         email: [
-          { required: true, message: '请输入用户名', trigger: 'blur' },
-          { min: 3, max: 10, message: '用户名长度在3到10个字之间', trigger: 'blur' }
+          { required: true, message: '请输入邮箱', trigger: 'blur' },
+          { validator: 'checkEmail', trigger: 'blur' }
         ],
         mobile: [
-          { required: true, message: '请输入用户名', trigger: 'blur' },
-          { min: 3, max: 10, message: '用户名长度在3到10个字之间', trigger: 'blur' }
+          { required: true, message: '请输入手机号', trigger: 'blur' },
+          { validator: 'checkMobile', trigger: 'blur' }
+
         ]
       }
 
@@ -210,6 +213,10 @@ export default {
         return this.$message.error('更新用户状态失败')
       }
       this.$message.success('状态更新成功')
+    },
+    // 监听表单的关闭事件，将里面内容重置
+    addDiaglogClosed () {
+      this.$refs.addFormRef.resetFields()
     }
 
   }
