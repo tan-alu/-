@@ -113,6 +113,7 @@
           title="修改用户"
           :visible.sync="editDialogVisible"
           width="50%"
+          @close="editDiaglogClosed"
           >
               <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="70px" >
                 <el-form-item label="用户名" prop="username" >
@@ -280,6 +281,10 @@ export default {
       this.$message.success('获取用户信息成功')
       this.editForm = res.data
       this.editDialogVisible = true
+    },
+    // 监听修改页面表单的关闭时间。内容重置
+    editDiaglogClosed () {
+      this.$refs.editFormRef.resetFields()
     }
 
   }
