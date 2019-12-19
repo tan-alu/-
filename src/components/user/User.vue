@@ -103,7 +103,7 @@
           </el-form>
         <span slot="footer" class="dialog-footer">
             <el-button @click="dialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+            <el-button type="primary" @click="addUser">确 定</el-button>
         </span>
     </el-dialog>
       </el-card>
@@ -217,6 +217,20 @@ export default {
     // 监听表单的关闭事件，将里面内容重置
     addDiaglogClosed () {
       this.$refs.addFormRef.resetFields()
+    },
+    // 点击添加对表单进行预校验
+    addUser () {
+      this.$refs.addFormRef.validate(async vaild => {
+        if (!vaild) return
+        const { data: res } = await this.$http.post('users', this.addForm)
+        // console.log(vaild)
+        // console.log(res)
+        if (res.meta.status !== 201) { return this.$message.error('创建用户失败') }
+        this.$message.success('添加用户成功')
+        // 隐藏对话框
+        this.dialogVisible = false
+        this.getList()
+      })
     }
 
   }
