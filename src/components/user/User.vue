@@ -128,7 +128,7 @@
             </el-form>
           <span slot="footer" class="dialog-footer">
             <el-button @click="editDialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="editDialogVisible = false">确 定</el-button>
+            <el-button type="primary" @click="editUser">确 定</el-button>
           </span>
         </el-dialog>
 
@@ -285,6 +285,24 @@ export default {
     // 监听修改页面表单的关闭时间。内容重置
     editDiaglogClosed () {
       this.$refs.editFormRef.resetFields()
+    },
+    // 编辑用户表单预验证
+    editUser (id) {
+      this.$refs.editFormRef.validate(async vaild => {
+        // console.log(vaild)
+        if (!vaild) return
+        let params = {
+          email: this.editForm.email,
+          mobile: this.editForm.mobile
+        }
+        const { data: res } = await this.$http.put('users/' + this.editForm.id, params)
+        console.log(res)
+        if (res.meta.status !== 200) return this.$message.error('失败')
+        this.editDialogVisible = false
+        this.getList()
+        this.$message.success('成功')
+        // this.showEditDialog()
+      })
     }
 
   }
