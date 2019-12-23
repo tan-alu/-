@@ -8,7 +8,13 @@
     </el-breadcrumb>
     <!-- card视图 -->
     <el-card>
-        123
+        <el-table :data="rightsList">
+            <el-table-column type="index"></el-table-column>
+            <el-table-column label="权限名称" prop="authName"></el-table-column>
+            <el-table-column label="路径" prop="path"></el-table-column>
+            <el-table-column label="权限等级" prop="level"></el-table-column>
+
+        </el-table>
     </el-card>
 
     </div>
@@ -34,6 +40,7 @@ export default {
       }
       this.$message.success('获取列表成功')
       this.rightsList = res.data
+    //   console.log(this.rightsList)
     }
   }
 
