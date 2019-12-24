@@ -25,7 +25,7 @@
                             <el-button type="primary" size="mini" icon="el-icon-edit" @click="editDialog(scope.row.id)">编辑</el-button>
                         </el-col>
                         <el-col :span="8">
-                            <el-button type="danger" size="mini" icon="el-icon-delete" >删除</el-button>
+                            <el-button type="danger" size="mini" icon="el-icon-delete" @click="deleteRoles(scope.row.id)">删除</el-button>
                         </el-col>
                         <el-col :span="8">
                             <el-button type="warning" size="mini" icon="el-icon-setting" >分配权限</el-button>
@@ -152,12 +152,30 @@ export default {
           roleDesc: this.editForm.roleDesc
         }
         const { data: res } = await this.$http.put('roles/' + this.editForm.roleId, params)
-        console.log(res)
+        // console.log(res)
         if (res.meta.status !== 200) return this.$message.error('失败')
         this.editDialogVisible = false
         this.getList()
         this.$message.success('成功')
       })
+    },
+    // 删除角色
+    async deleteRoles (id) {
+      const confirmResult = await this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).catch(err => err)
+      // console.log(confirmResult)
+      if (confirmResult !== 'confirm') {
+        return this.$message.info('已取消删除')
+      }
+      const { data: res } = await this.$http.delete('roles/' + id)
+      if (res.meta.status !== 200) {
+        return this.$message.error('删除角色失败')
+      }
+      this.$message.success('删除角色成功')
+      this.getList()
     }
 
   }
