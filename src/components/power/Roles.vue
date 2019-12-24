@@ -71,7 +71,7 @@
                             <el-button type="danger" size="mini" icon="el-icon-delete" @click="deleteRoles(scope.row.id)">删除</el-button>
                         </el-col>
                         <el-col :span="8">
-                            <el-button type="warning" size="mini" icon="el-icon-setting" >分配权限</el-button>
+                            <el-button type="warning" size="mini" icon="el-icon-setting" @click="showRightDialog">分配权限</el-button>
                         </el-col>
                     </el-row>
                 </template>
@@ -118,6 +118,19 @@
             <el-button type="primary" @click="editRoles">确 定</el-button>
         </span>
     </el-dialog>
+    <!-- 分配权限对话框 -->
+        <el-dialog
+        title="分配角色"
+        :visible.sync="setRightDialogVisible"
+        width="50%"
+        >
+        <el-tree :data="rightList" :props="treeProps"
+        ></el-tree>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="setRightDialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="editRoles">确 定</el-button>
+        </span>
+    </el-dialog>
     </div>
 </template>
 
@@ -129,13 +142,22 @@ export default {
       roleList: [],
       dialogVisible: false,
       editDialogVisible: false,
+      setRightDialogVisible: false,
       addForm: {
         roleName: '',
         roleDesc: '',
         roleId: ''
       },
       editForm: {
+      },
+      // 权限角色数据
+      rightList: [],
+      // 树形控件属性绑定
+      treeProps: {
+        children: 'children',
+        label: 'authName'
       }
+
     }
   },
   mounted () {
@@ -235,6 +257,14 @@ export default {
       }
       // this.getList()
       role.children = res.data
+    },
+    // 分配权限对话框
+    async showRightDialog () {
+      this.setRightDialogVisible = true
+      const { data: res } = await this.$http.get('rights/tree')
+      if (res.meta.status !== 200) return this.$message.error('获取数据失败')
+      this.rightList = res.data
+      // console.log(this.rightList)
     }
 
   }
