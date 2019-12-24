@@ -22,7 +22,9 @@
                   :key="item1.id">
                   <!-- 一级权限 -->
                   <el-col  :span="5">
-                    <el-tag>{{item1.authName}}</el-tag>
+                    <el-tag
+                      closable
+                      @close='removeRightById(scope.row,item1.id)'>{{item1.authName}}</el-tag>
                     <i class="el-icon-caret-right"></i>
                   </el-col>
                   <!-- 二级三级权限 -->
@@ -33,7 +35,10 @@
                       :key="item2.id">
                       <!-- 二级权限 -->
                       <el-col :span="6">
-                        <el-tag type="success">{{item2.authName}}</el-tag>
+                        <el-tag
+                          type="success"
+                          closable
+                          @close='removeRightById(scope.row,item2.id)'>{{item2.authName}}</el-tag>
                         <i class="el-icon-caret-right"></i>
                       </el-col>
                       <!-- 三级权限 -->
@@ -43,7 +48,7 @@
                           :key="item3.id"
                           type="warning"
                           closable
-                          @close='removeRightById()'>
+                          @close='removeRightById(scope.row,item3.id)'>
                           {{item3.authName}}
                         </el-tag>
                       </el-col>
@@ -216,13 +221,20 @@ export default {
       this.getList()
     },
     // 根据Id删除对应的权限
-    async removeRightById () {
+    async removeRightById (role, rightId) {
       const confirmResult = await this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).catch(err => err)
       if (confirmResult !== 'confirm') return this.$message.info('取消删除')
+      // 发起删除业务请求
+      const { data: res } = await this.$http.delete(`roles/${role.id}/rights/${rightId}`)
+      if (res.meta.status !== 200) {
+        return this.$message.error('删除权限失败')
+      }
+      // this.getList()
+      role.children = res.data
     }
 
   }
