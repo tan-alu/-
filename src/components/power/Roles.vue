@@ -124,8 +124,13 @@
         :visible.sync="setRightDialogVisible"
         width="50%"
         >
-        <el-tree :data="rightList" :props="treeProps"
-        ></el-tree>
+        <el-tree
+          :data="rightList"
+          :props="treeProps"
+          node-key="id"
+          default-expand-all
+          :default-checked-keys="defKeys"
+          show-checkbox></el-tree>
         <span slot="footer" class="dialog-footer">
             <el-button @click="setRightDialogVisible = false">取 消</el-button>
             <el-button type="primary" @click="editRoles">确 定</el-button>
@@ -156,7 +161,9 @@ export default {
       treeProps: {
         children: 'children',
         label: 'authName'
-      }
+      },
+      // 默认选中的节点Id数组
+      defKeys: [105, 116]
 
     }
   },
