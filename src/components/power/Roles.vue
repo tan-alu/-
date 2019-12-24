@@ -41,7 +41,9 @@
                         <el-tag
                           v-for="(item3) in item2.children"
                           :key="item3.id"
-                          type="warning">
+                          type="warning"
+                          closable
+                          @close='removeRightById()'>
                           {{item3.authName}}
                         </el-tag>
                       </el-col>
@@ -212,6 +214,15 @@ export default {
       }
       this.$message.success('删除角色成功')
       this.getList()
+    },
+    // 根据Id删除对应的权限
+    async removeRightById () {
+      const confirmResult = await this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).catch(err => err)
+      if (confirmResult !== 'confirm') return this.$message.info('取消删除')
     }
 
   }
