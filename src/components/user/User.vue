@@ -63,7 +63,7 @@
                   <!-- 分配角色 -->
                   <el-col :span="8">
                     <el-tooltip effect="dark" content="分配角色" placement="top" :enterable="false">
-                      <el-button type="warning" size="mini" icon="el-icon-setting"></el-button>
+                      <el-button type="warning" size="mini" icon="el-icon-setting" @click="allotDialog(scope.row)"></el-button>
                     </el-tooltip>
                   </el-col>
                 </el-row>
@@ -131,6 +131,20 @@
             <el-button type="primary" @click="editUser">确 定</el-button>
           </span>
         </el-dialog>
+        <!-- 分配角色对话框 -->
+        <el-dialog
+          title="分配角色"
+          :visible.sync="allotDialogVisible"
+          width="50%"
+          >
+            <p>当前用户用户：{{userInfo.username}}</p>
+            <p>当前用户角色：{{userInfo.role_name}}</p>
+            <p>分配新角色：</p>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="allotDialogVisible = false">取 消</el-button>
+            <el-button type="primary">确 定</el-button>
+          </span>
+        </el-dialog>
 
     </div>
 </template>
@@ -166,16 +180,18 @@ export default {
         // 当前显示多少条
         'pagesize': 2
       },
+      // 需要被分配的用户信息
+      userInfo: [],
       userList: [],
       total: 0,
       dialogVisible: false,
       editDialogVisible: false,
+      allotDialogVisible: false,
       addForm: {
         username: '',
         password: '',
         email: '',
         mobile: ''
-
       },
       // 添加表单的验证规则
       addFormRules: {
@@ -324,8 +340,18 @@ export default {
       }
       this.$message.success('删除用户成功')
       this.getList()
+    },
+    // 分配角色
+    async allotDialog (userInfo) {
+      this.userInfo = userInfo
+      this.allotDialogVisible = true
+      const { data: res } = await this.$http.get('roles')
+      // console.log(res)
+      if (res.meta.status !== 200) {
+        return this.$message.error('分配用户失败')
+      }
+      this.$message.success('分配用户成功')
     }
-
   }
 }
 </script>
