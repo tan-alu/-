@@ -11,46 +11,21 @@
         <el-card>
             <el-button>添加分类</el-button>
             <!-- 表格数据 -->
-            <el-table
+            <tree-table
                 :data="goodList"
-                style="width: 100%"
-                border
-                stripe>
-                 <el-table-column
-                    type="index">
-                </el-table-column>
-                <el-table-column
-                    prop="cat_name"
-                    label="分类名称">
-                </el-table-column>
-                <el-table-column
-                    prop="cat_deleted"
-                    label="是否有效"
-                    width="180">
-                    <template slot-scope="scope">
-                        <pre>{{scope.row}}</pre>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                    prop="cat_level"
-                    label="排序">
-                </el-table-column>
-                <el-table-column
-                    prop="address"
-                    label="操作">
-                    <template slot-scope="scope">
-                        <el-row>
-                            <el-col :span="12">
-                            <el-button type="primary" size="mini" icon="el-icon-edit" @click="editDialog(scope.row.id)">编辑</el-button>
-                            </el-col>
-                            <el-col :span="12">
-                                <el-button type="danger" size="mini" icon="el-icon-delete" @click="deleteRoles(scope.row.id)">删除</el-button>
-                            </el-col>
-                        </el-row>
-                    </template>
+                :columns="columns"
+                :selection-type="false"
+                :expand-type="false"
+                :show-index="true"
+                index-text="#"
+                :show-row-hover="true"
+                border>
+                <template slot="isok" slot-scope="scope">
+                    <i class="el-icon-success" v-if="scope.row.cat_deleted==true" style="color:lightgreen;"></i>
+                    <i class="el-icon-error" v-else style="color:red;"></i>
+                </template>
 
-                </el-table-column>
-            </el-table>
+            </tree-table>
             <!-- 分页 -->
         </el-card>
 
@@ -69,7 +44,15 @@ export default {
         pagenum: 1,
         pagesize: 5
       },
-      total: 0
+      total: 0,
+      columns: [
+        { label: '分类名称',
+          prop: 'cat_name' },
+        { label: '是否有效',
+          type: 'template',
+          template: 'isok'
+        }
+      ]
     }
   },
   mounted () {
@@ -79,7 +62,7 @@ export default {
     // 获取商品列表
     async getList () {
       const { data: res } = await this.$http.get('categories', { params: this.queryInfo })
-      //   console.log(res)
+      console.log(res)
       if (res.meta.status !== 200) {
         return this.$message.error('获取商品列表失败')
       }
@@ -94,5 +77,8 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+.zk-table{
+    margin-top:15px;
+}
 
 </style>

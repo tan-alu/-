@@ -11,6 +11,7 @@ import Element from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 // 导入axios
 import axios from 'axios'
+// 导入表格树形控件
 import TreeTable from 'vue-table-with-tree-grid'
 Vue.component('tree-table', TreeTable)
 
