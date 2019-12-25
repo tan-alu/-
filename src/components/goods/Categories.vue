@@ -44,6 +44,16 @@
                 </template>
             </tree-table>
             <!-- 分页 -->
+            <el-pagination
+                class="treeTable"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="queryInfo.pagenum"
+                :page-sizes="[3, 5, 10, 15]"
+                :page-size="queryInfo.pagesize"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="total">
+            </el-pagination>
         </el-card>
 
     </div>
@@ -95,6 +105,18 @@ export default {
       this.goodList = res.data.result
       //   为总数据条数赋值
       this.total = res.data.total
+    },
+    // 监听Pagesize改变
+    handleSizeChange (val) {
+    //   console.log(`每页 ${val} 条`)
+      this.queryInfo.pagesize = val
+      this.getList()
+    },
+
+    handleCurrentChange (val) {
+    //   console.log(`当前页: ${val}`)
+      this.queryInfo.pagenum = val
+      this.getList()
     }
 
   }
