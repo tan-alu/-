@@ -137,9 +137,20 @@
           :visible.sync="allotDialogVisible"
           width="50%"
           >
+          <div>
             <p>当前用户用户：{{userInfo.username}}</p>
             <p>当前用户角色：{{userInfo.role_name}}</p>
-            <p>分配新角色：</p>
+            <p>分配新角色：
+              <el-select v-model="selectedRoleId" placeholder="请选择">
+                <el-option
+                  v-for="item in roleList"
+                  :label="item.roleName"
+                  :key="item.id"
+                  :value="item.id">
+                </el-option>
+              </el-select>
+            </p>
+          </div>
           <span slot="footer" class="dialog-footer">
             <el-button @click="allotDialogVisible = false">取 消</el-button>
             <el-button type="primary">确 定</el-button>
@@ -183,10 +194,14 @@ export default {
       // 需要被分配的用户信息
       userInfo: [],
       userList: [],
+      // 分配角色的数据列表
+      roleList: [],
       total: 0,
       dialogVisible: false,
       editDialogVisible: false,
       allotDialogVisible: false,
+      // 已选中的角色Id
+      selectedRoleId: '',
       addForm: {
         username: '',
         password: '',
@@ -350,6 +365,7 @@ export default {
       if (res.meta.status !== 200) {
         return this.$message.error('分配用户失败')
       }
+      this.roleList = res.data
       this.$message.success('分配用户成功')
     }
   }
