@@ -9,7 +9,7 @@
         </el-breadcrumb>
         <!-- card卡片区域 -->
         <el-card>
-            <el-button>添加分类</el-button>
+            <el-button @click="addCategory">添加分类</el-button>
             <!-- 表格数据 -->
             <tree-table
                 :data="goodList"
@@ -55,6 +55,30 @@
                 :total="total">
             </el-pagination>
         </el-card>
+        <!-- 添加分类对话框 -->
+        <el-dialog
+            title="添加分类"
+            :visible.sync="dialogVisible"
+            width="50%">
+            <el-form :model="addCateForm"
+                ref="addCateRef"
+                :rules="addCateRules">
+                <el-form-item label="分类名称" prop="cat_name">
+                    <el-input
+                        placeholder="请输入内容"
+                        style="width:50%;"
+                        v-model="addCateForm.cat_name"></el-input>
+                </el-form-item>
+                <el-form-item label="分类名称">
+                    <el-cascader
+                        style="width:50%;"></el-cascader>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+            </span>
+        </el-dialog>
 
     </div>
 </template>
@@ -87,7 +111,11 @@ export default {
           type: 'template',
           template: 'operate'
         }
-      ]
+      ],
+      // 添加分类对话框
+      dialogVisible: false,
+      addCateRules: [],
+      addCateForm: {}
     }
   },
   mounted () {
@@ -97,7 +125,7 @@ export default {
     // 获取商品列表
     async getList () {
       const { data: res } = await this.$http.get('categories', { params: this.queryInfo })
-      console.log(res)
+      //   console.log(res)
       if (res.meta.status !== 200) {
         return this.$message.error('获取商品列表失败')
       }
@@ -117,6 +145,11 @@ export default {
     //   console.log(`当前页: ${val}`)
       this.queryInfo.pagenum = val
       this.getList()
+    },
+    // 添加分类
+    addCategory () {
+    //   console.log('添加分类')
+      this.dialogVisible = true
     }
 
   }
