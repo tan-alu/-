@@ -136,6 +136,7 @@
           title="分配角色"
           :visible.sync="allotDialogVisible"
           width="50%"
+          @close="allotClosed"
           >
           <div>
             <p>当前用户用户：{{userInfo.username}}</p>
@@ -153,7 +154,7 @@
           </div>
           <span slot="footer" class="dialog-footer">
             <el-button @click="allotDialogVisible = false">取 消</el-button>
-            <el-button type="primary">确 定</el-button>
+            <el-button type="primary" @click="setRoleId()">确 定</el-button>
           </span>
         </el-dialog>
 
@@ -367,6 +368,24 @@ export default {
       }
       this.roleList = res.data
       this.$message.success('分配用户成功')
+    },
+    // 选择分配角色，并发送请求
+    async setRoleId () {
+      // console.log(111)
+      const { data: res } = await this.$http.put(`users/${this.userInfo.id}/role`, { rid: this.selectedRoleId })
+      // console.log(res)
+      if (res.meta.status !== 200) {
+        return this.$message.error('更新用户失败')
+      }
+
+      this.$message.success('更新用户成功')
+      this.getList()
+      this.allotDialogVisible = false
+    },
+    // 关闭分配角色对话框，重置信息
+    allotClosed () {
+      this.selectedRoleId = ''
+      this.userInfo = {}
     }
   }
 }
