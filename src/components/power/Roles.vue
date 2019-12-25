@@ -71,7 +71,7 @@
                           <el-button type="danger" size="mini" icon="el-icon-delete" @click="deleteRoles(scope.row.id)">删除</el-button>
                       </el-col>
                       <el-col :span="8">
-                          <el-button type="warning" size="mini" icon="el-icon-setting" @click="showRightDialog">分配权限</el-button>
+                          <el-button type="warning" size="mini" icon="el-icon-setting" @click="showRightDialog(scope.row)">分配权限</el-button>
                       </el-col>
                   </el-row>
               </template>
@@ -264,13 +264,13 @@ export default {
       role.children = res.data
     },
     // 分配权限对话框
-    async showRightDialog () {
+    async showRightDialog (role) {
       const { data: res } = await this.$http.get('rights/tree')
       if (res.meta.status !== 200) return this.$message.error('获取数据失败')
       this.rightList = res.data
       // console.log(this.rightList)
-      // 递归获取
-      // getLeafKeys
+      // 递归获取三级节点的id
+      this.getLeafKeys(role, this.defKeys)
       this.setRightDialogVisible = true
     },
     // 通过递归的形式，获取角色下所有三级权限的Id,并保存到defKeys
