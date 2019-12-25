@@ -20,11 +20,28 @@
                 index-text="#"
                 :show-row-hover="true"
                 border>
+                <!-- 是否有效 -->
                 <template slot="isok" slot-scope="scope">
                     <i class="el-icon-success" v-if="scope.row.cat_deleted==true" style="color:lightgreen;"></i>
                     <i class="el-icon-error" v-else style="color:red;"></i>
                 </template>
-
+                <!-- 排序 -->
+                <template slot="sort" slot-scope="scope">
+                    <el-tag v-if="scope.row.cat_level==0">一级</el-tag>
+                    <el-tag v-else-if="scope.row.cat_level==1" type="success">二级</el-tag>
+                    <el-tag v-else type="warning">三级</el-tag>
+                </template>
+                <!-- 是否操作 -->
+                <template slot="operate" slot-scope="scope">
+                    <el-row>
+                       <el-col :span="12">
+                          <el-button type="primary" size="mini" icon="el-icon-edit" @click="editDialog(scope.row.id)">编辑</el-button>
+                      </el-col>
+                      <el-col :span="12">
+                          <el-button type="danger" size="mini" icon="el-icon-delete" @click="deleteRoles(scope.row.id)">删除</el-button>
+                      </el-col>
+                    </el-row>
+                </template>
             </tree-table>
             <!-- 分页 -->
         </el-card>
@@ -51,6 +68,14 @@ export default {
         { label: '是否有效',
           type: 'template',
           template: 'isok'
+        },
+        { label: '排序',
+          type: 'template',
+          template: 'sort'
+        },
+        { label: '是否操作',
+          type: 'template',
+          template: 'operate'
         }
       ]
     }
