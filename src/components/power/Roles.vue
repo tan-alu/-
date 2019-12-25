@@ -123,6 +123,7 @@
       title="分配角色"
       :visible.sync="setRightDialogVisible"
       width="50%"
+      @close="setRightClosed"
       >
         <el-tree
           :data="rightList"
@@ -281,6 +282,11 @@ export default {
       }
       node.children.forEach(item =>
         this.getLeafKeys(item, arr))
+    },
+    // 监听分配权限对话框关闭事件
+    setRightClosed () {
+      // 给defKeys清空 重新赋值
+      this.defKeys = []
     }
   }
 }
