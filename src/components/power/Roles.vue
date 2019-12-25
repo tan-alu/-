@@ -129,12 +129,13 @@
           :data="rightList"
           :props="treeProps"
           node-key="id"
+          ref="treeRef"
           default-expand-all
           :default-checked-keys="defKeys"
           show-checkbox></el-tree>
         <span slot="footer" class="dialog-footer">
             <el-button @click="setRightDialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="editRoles">确 定</el-button>
+            <el-button type="primary" @click="allotRight">确 定</el-button>
         </span>
     </el-dialog>
     </div>
@@ -163,7 +164,8 @@ export default {
         label: 'authName'
       },
       // 默认选中的节点Id数组
-      defKeys: []
+      defKeys: [],
+      roleId: ''
     }
   },
   mounted () {
@@ -266,6 +268,7 @@ export default {
     },
     // 分配权限对话框
     async showRightDialog (role) {
+      this.roleId = role.id
       const { data: res } = await this.$http.get('rights/tree')
       if (res.meta.status !== 200) return this.$message.error('获取数据失败')
       this.rightList = res.data
@@ -287,7 +290,27 @@ export default {
     setRightClosed () {
       // 给defKeys清空 重新赋值
       this.defKeys = []
+    },
+    // 为角色分配权限
+    async allotRight () {
+      // 拿到节点和半节点的Id
+      const keys = [
+        ...this.$refs.treeRef.getCheckedKeys(),
+        ...this.$refs.treeRef.getHalfCheckedKeys()
+      ]
+      // console.log(keys)
+      // 拼接成字符串
+      const idStr = keys.join(',')
+      // 发送请求
+      const { data: res } = await this.$http.post(`roles/${this.roleId}/rights`, { rids: idStr })
+      // console.log(res)
+      if (res.meta.status !== 200) return this.$message.error('分配角色失败')
+      this.$message.success('分配角色成功')
+      this.setRightDialogVisible = false
+      // this.roleId = res.data
+      this.getList()
     }
+
   }
 }
 </script>
