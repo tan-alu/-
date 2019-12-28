@@ -206,8 +206,22 @@ export default {
         this.addCateForm.cat_level = 0
       }
     },
+    // 添加分类对话框，点击确认按钮发送数据
     addCate () {
-      console.log(this.addCateForm)
+      // console.log(this.addCateForm)
+      // 表单预验证
+      this.$refs.addCateRef.validate(async valid => {
+        if (!valid) return
+        const { data: res } = await this.$http.post('categories',
+          this.addCateForm)
+        // console.log(res)
+        if (res.meta.status !== 201) {
+          return this.$message.error('失败')
+        }
+        this.$message.success('成功')
+        this.getList()
+        this.dialogVisible = false
+      })
     },
     // 监听对话框 关闭事件 重置表单数据
     addCateDialogClosed () {
