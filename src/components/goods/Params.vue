@@ -25,10 +25,15 @@
             </el-row>
             <!-- 动态参数，静态参数 -->
             <el-tabs v-model="activeName" @tab-click="handleClick">
-                <el-tab-pane label="动态参数" name="first">动态参数</el-tab-pane>
-                <el-tab-pane label="静态参数" name="second">静态参数</el-tab-pane>
+                <!-- 动态参数 -->
+                <el-tab-pane label="动态参数" name="first">
+                    <el-button size="mini" :disabled="isBtnDisable">添加参数</el-button>
+                </el-tab-pane>
+                <!-- 静态参数 -->
+                <el-tab-pane label="静态参数" name="second">
+                    <el-button size="mini" :disabled="isBtnDisable">添加参数</el-button>
+                </el-tab-pane>
             </el-tabs>
-
         </el-card>
     </div>
 </template>
@@ -47,12 +52,23 @@ export default {
       },
       // 级联选择框双向绑定的数据
       selectedCateKeys: [],
-      activeName: 'second'
+      //   被激活的页签
+      activeName: 'first'
 
     }
   },
   mounted () {
     this.getList()
+  },
+  computed: {
+    //   只有在选择商品分类的时候，添加参数的按钮才可以操作
+    isBtnDisable () {
+      if (this.selectedCateKeys.length !== 3) {
+        return true
+      }
+      return false
+    }
+
   },
   methods: {
     // 列表数据
