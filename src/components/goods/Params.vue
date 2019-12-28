@@ -26,11 +26,11 @@
             <!-- 动态参数，静态参数 -->
             <el-tabs v-model="activeName" @tab-click="handleClick">
                 <!-- 动态参数 -->
-                <el-tab-pane label="动态参数" name="first">
+                <el-tab-pane label="动态参数" name="many">
                     <el-button size="mini" :disabled="isBtnDisable">添加参数</el-button>
                 </el-tab-pane>
                 <!-- 静态参数 -->
-                <el-tab-pane label="静态参数" name="second">
+                <el-tab-pane label="静态参数" name="only">
                     <el-button size="mini" :disabled="isBtnDisable">添加参数</el-button>
                 </el-tab-pane>
             </el-tabs>
@@ -53,15 +53,12 @@ export default {
       // 级联选择框双向绑定的数据
       selectedCateKeys: [],
       //   被激活的页签
-      activeName: 'first',
-      // 参数列表
-      paramsList: []
+      activeName: 'many'
 
     }
   },
   mounted () {
     this.getList()
-    this.getParamsList()
   },
   computed: {
     //   只有在选择商品分类的时候，添加参数的按钮才可以操作
@@ -72,7 +69,7 @@ export default {
       return false
     },
     // 当前选中的三级分类的Id
-    cateId: function () {
+    cateId () {
       if (this.selectedCateKeys.length === 3) {
         return this.selectedCateKeys[2]
       }
@@ -92,23 +89,23 @@ export default {
       this.cateList = res.data
     },
     // 级联选择器变化,触发函数
-    handleChange () {
+    async handleChange () {
       // 实现只有在是三级分类的时候才能够被选择，否则就被清空
       if (this.selectedCateKeys.length !== 3) {
         this.selectedCateKeys = []
         return
       }
-
-      console.log(this.selectedCateKeys)
+      //   console.log(this.selectedCateKeys)
+      // 根据所选分类Id获取当前参数
+      const { data: res } = await this.$http.get(`categories/${this.cateId}/attributes`,
+        { params: { sel: this.activeName } })
+      //   console.log(res)
+      if (res.meta.status !== 200) this.$message.error('获取参数列表失败')
+      this.$message.success('获取参数列表成功')
     },
     // tabs切换
     handleClick (tab, event) {
       console.log(tab, event)
-    },
-    // 参数列表
-    getParamsList () {
-      const { data: res } = this.$http.get('categories/id/attributes')
-      console.log(res)
     }
 
   }
