@@ -62,16 +62,24 @@
             width="50%">
             <el-form :model="addCateForm"
                 ref="addCateRef"
-                :rules="addCateRules">
+                :rules="addCateRules"
+                label-width="100px">
                 <el-form-item label="分类名称" prop="cat_name">
                     <el-input
                         placeholder="请输入内容"
-                        style="width:50%;"
                         v-model="addCateForm.cat_name"></el-input>
                 </el-form-item>
-                <el-form-item label="分类名称">
-                    <el-cascader
-                        style="width:50%;"></el-cascader>
+                <el-form-item label="父级分类" >
+                  <el-cascader
+                    v-model="selectedKeys"
+                    expand-trigger="hover"
+                    :options="parenCatetList"
+                    :props="cascaderProps"
+                    style="width:100%;"
+                    @change="parentsCateChange"
+                    clearable
+                    change-on-select
+                   ></el-cascader>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -114,12 +122,33 @@ export default {
       ],
       // 添加分类对话框
       dialogVisible: false,
-      addCateRules: [],
-      addCateForm: {}
+      // 表单验证规则
+      addCateRules: {
+        cat_name: [
+          { required: true, message: '请输入分类名称', trigger: 'blur' }
+        ]
+      },
+      addCateForm: {
+        cat_name: '',
+        cat_pid: 0,
+        // 分类的登记 默认要添加一级分类
+        cat_level: 0
+      },
+      // 父级列表数据
+      parenCatetList: [],
+      // 指定级联选择器的配置对象
+      cascaderProps: {
+        value: 'cat_id',
+        label: 'cat_name',
+        children: 'children'
+      },
+      // 选中的父级分类的id数组
+      selectedKeys: []
     }
   },
   mounted () {
     this.getList()
+    // this.getParentList()
   },
   methods: {
     // 获取商品列表
@@ -149,7 +178,21 @@ export default {
     // 添加分类
     addCategory () {
     //   console.log('添加分类')
+      this.getParentList()
       this.dialogVisible = true
+    },
+    // 获取父级分类列表
+    async getParentList () {
+      const { data: res } = await this.$http.get('categories',
+        { params: { type: 2 } })
+      // console.log(res)
+      if (res.meta.status !== 200) return this.$message.error('获取父级数据失败')
+      // this.$message.success('获取父级数据成功')
+      this.parenCatetList = res.data
+    },
+    // 选择项发生变化的时候触发这个函数
+    parentsCateChange () {
+      console.log(this.selectedKeys)
     }
 
   }
