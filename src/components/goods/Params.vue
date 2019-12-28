@@ -53,12 +53,15 @@ export default {
       // 级联选择框双向绑定的数据
       selectedCateKeys: [],
       //   被激活的页签
-      activeName: 'first'
+      activeName: 'first',
+      // 参数列表
+      paramsList: []
 
     }
   },
   mounted () {
     this.getList()
+    this.getParamsList()
   },
   computed: {
     //   只有在选择商品分类的时候，添加参数的按钮才可以操作
@@ -67,6 +70,13 @@ export default {
         return true
       }
       return false
+    },
+    // 当前选中的三级分类的Id
+    cateId: function () {
+      if (this.selectedCateKeys.length === 3) {
+        return this.selectedCateKeys[2]
+      }
+      return null
     }
 
   },
@@ -94,6 +104,11 @@ export default {
     // tabs切换
     handleClick (tab, event) {
       console.log(tab, event)
+    },
+    // 参数列表
+    getParamsList () {
+      const { data: res } = this.$http.get('categories/id/attributes')
+      console.log(res)
     }
 
   }
