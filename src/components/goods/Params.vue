@@ -23,6 +23,11 @@
                         @change="handleChange"></el-cascader>
                 </el-col>
             </el-row>
+            <!-- 动态参数，静态参数 -->
+            <el-tabs v-model="activeName" @tab-click="handleClick">
+                <el-tab-pane label="动态参数" name="first">动态参数</el-tab-pane>
+                <el-tab-pane label="静态参数" name="second">静态参数</el-tab-pane>
+            </el-tabs>
 
         </el-card>
     </div>
@@ -41,7 +46,8 @@ export default {
         children: 'children'
       },
       // 级联选择框双向绑定的数据
-      selectedCateKeys: []
+      selectedCateKeys: [],
+      activeName: 'second'
 
     }
   },
@@ -59,9 +65,19 @@ export default {
       this.$message.success('获取商品分类成功')
       this.cateList = res.data
     },
-    // 级联选择器变化
+    // 级联选择器变化,触发函数
     handleChange () {
+      // 实现只有在是三级分类的时候才能够被选择，否则就被清空
+      if (this.selectedCateKeys.length !== 3) {
+        this.selectedCateKeys = []
+        return
+      }
+
       console.log(this.selectedCateKeys)
+    },
+    // tabs切换
+    handleClick (tab, event) {
+      console.log(tab, event)
     }
 
   }
@@ -72,6 +88,9 @@ export default {
 <style lang="less" scoped>
 .goods_allot{
     margin-top: 20px;
+}
+.el-tabs{
+    margin-top:15px;
 }
 
 </style>
