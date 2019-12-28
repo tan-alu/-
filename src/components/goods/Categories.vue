@@ -59,7 +59,8 @@
         <el-dialog
             title="添加分类"
             :visible.sync="dialogVisible"
-            width="50%">
+            width="50%"
+            @close="addCateDialogClosed">
             <el-form :model="addCateForm"
                 ref="addCateRef"
                 :rules="addCateRules"
@@ -84,7 +85,7 @@
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+                <el-button type="primary" @click="addCate">确 定</el-button>
             </span>
         </el-dialog>
 
@@ -193,6 +194,27 @@ export default {
     // 选择项发生变化的时候触发这个函数
     parentsCateChange () {
       console.log(this.selectedKeys)
+      // 如果selectedKeys中数组中的Length大于0.就说明选中了父级分类，反之没选中
+      if (this.selectedKeys.length > 0) {
+        // 选择最后一项的索引
+        // 父级分类的Id
+        this.addCateForm.cat_pid = this.selectedKeys[this.selectedKeys.length - 1]
+        // 为当前分类的等级赋值
+        this.addCateForm.cat_level = this.selectedKeys.length
+      } else {
+        this.addCateForm.cat_pid = 0
+        this.addCateForm.cat_level = 0
+      }
+    },
+    addCate () {
+      console.log(this.addCateForm)
+    },
+    // 监听对话框 关闭事件 重置表单数据
+    addCateDialogClosed () {
+      this.$refs.addCateRef.resetFields()
+      this.selectedKeys = []
+      this.addCateForm.cat_pid = 0
+      this.addCateForm.cat_level = 0
     }
 
   }
