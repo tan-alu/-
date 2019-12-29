@@ -28,10 +28,52 @@
                 <!-- 动态参数 -->
                 <el-tab-pane label="动态参数" name="many">
                     <el-button size="mini" :disabled="isBtnDisable">添加参数</el-button>
+                    <!-- 动态参数表格 -->
+                    <el-table :data="manyTable" border stripe>
+                      <el-table-column type="expand"></el-table-column>
+                      <el-table-column type="index"></el-table-column>
+                      <el-table-column label="参数名称" prop="attr_name"></el-table-column>
+                      <el-table-column label="操作">
+                        <template slot-scope="scope">
+                          <el-button
+                            type="primary"
+                            icon="el-icon-edit"
+                            size="mini"
+                            @click="edit(scope.row.id)"
+                          >编辑</el-button>
+                          <el-button
+                            type="danger"
+                            icon="el-icon-delete"
+                            size="mini"
+                            >删除</el-button>
+                        </template>
+                      </el-table-column>
+                    </el-table>
                 </el-tab-pane>
                 <!-- 静态参数 -->
                 <el-tab-pane label="静态参数" name="only">
                     <el-button size="mini" :disabled="isBtnDisable">添加参数</el-button>
+                    <!-- 静态参数表格 -->
+                    <el-table :data="onlyTable" border stripe>
+                      <el-table-column type="expand"></el-table-column>
+                      <el-table-column type="index"></el-table-column>
+                      <el-table-column label="属性名称" prop="attr_name"></el-table-column>
+                      <el-table-column label="操作">
+                        <template slot-scope="scope">
+                          <el-button
+                            type="primary"
+                            icon="el-icon-edit"
+                            size="mini"
+                            @click="edit(scope.row.id)"
+                          >编辑</el-button>
+                          <el-button
+                            type="danger"
+                            icon="el-icon-delete"
+                            size="mini"
+                            >删除</el-button>
+                        </template>
+                      </el-table-column>
+                    </el-table>
                 </el-tab-pane>
             </el-tabs>
         </el-card>
