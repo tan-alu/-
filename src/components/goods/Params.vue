@@ -27,7 +27,11 @@
             <el-tabs v-model="activeName" @tab-click="handleClick">
                 <!-- 动态参数 -->
                 <el-tab-pane label="动态参数" name="many">
-                    <el-button size="mini" :disabled="isBtnDisable">添加参数</el-button>
+                    <el-button
+                      size="mini"
+                      :disabled="isBtnDisable"
+                      @click="addParams"
+                      >添加参数</el-button>
                     <!-- 动态参数表格 -->
                     <el-table :data="manyTable" border stripe>
                       <el-table-column type="expand"></el-table-column>
@@ -52,7 +56,7 @@
                 </el-tab-pane>
                 <!-- 静态参数 -->
                 <el-tab-pane label="静态参数" name="only">
-                    <el-button size="mini" :disabled="isBtnDisable">添加参数</el-button>
+                    <el-button size="mini" :disabled="isBtnDisable" @click="addParams">添加属性</el-button>
                     <!-- 静态参数表格 -->
                     <el-table :data="onlyTable" border stripe>
                       <el-table-column type="expand"></el-table-column>
@@ -77,6 +81,28 @@
                 </el-tab-pane>
             </el-tabs>
         </el-card>
+        <!-- 添加参数对话框 -->
+        <el-dialog
+          :title="'添加'+titleText"
+          :visible.sync="addParamsDialogVisible"
+          width="50%"
+          @close="addParamsClosed"
+         >
+          <el-form
+            v-model="addParamsForm"
+            ref="addParamsFormRef"
+            :rules="addParamsFormRules"
+            label-width="80px"
+            >
+            <el-form-item :label="titleText" prop="attr_name">
+              <el-input v-model="addParamsForm.attr_name"></el-input>
+            </el-form-item>
+          </el-form>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="addParamsDialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="addParamsDialogVisible = false">确 定</el-button>
+          </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -99,7 +125,19 @@ export default {
       // 动态参数的数据
       manyTable: [],
       // 静态参数的数据
-      onlyTable: []
+      onlyTable: [],
+      // 添加动态参数对话框
+      addParamsDialogVisible: false,
+      // 动态表单的数据
+      addParamsForm: {},
+      // 动态表单的数据规则
+      addParamsFormRules: {
+        attr_name: [
+          { required: true,
+            message: '请输入参数名称',
+            trigger: 'blur' }]
+
+      }
 
     }
   },
@@ -120,6 +158,14 @@ export default {
         return this.selectedCateKeys[2]
       }
       return null
+    },
+    // 动态计算标题文本
+    titleText () {
+      if (this.activeName === 'many') {
+        return '动态参数'
+      } else {
+        return '静态属性'
+      }
     }
 
   },
@@ -162,6 +208,15 @@ export default {
       } else {
         this.onlyTable = res.data
       }
+    },
+    // 添加动态参数对话框的点击事件
+    addParams () {
+      this.addParamsDialogVisible = true
+    },
+    // 关闭参数对话框
+    addParamsClosed () {
+      // 关闭之后重置
+      this.$refs.addParamsFormRef.resetFields()
     }
 
   }
