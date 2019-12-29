@@ -53,7 +53,11 @@ export default {
       // 级联选择框双向绑定的数据
       selectedCateKeys: [],
       //   被激活的页签
-      activeName: 'many'
+      activeName: 'many',
+      // 动态参数的数据
+      manyTable: [],
+      // 静态参数的数据
+      onlyTable: []
 
     }
   },
@@ -111,6 +115,11 @@ export default {
       //   console.log(res)
       if (res.meta.status !== 200) this.$message.error('获取参数列表失败')
       this.$message.success('获取参数列表成功')
+      if (this.activeName === 'many') {
+        this.manyTable = res.data
+      } else {
+        this.onlyTable = res.data
+      }
     }
 
   }
