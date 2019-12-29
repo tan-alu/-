@@ -90,6 +90,15 @@ export default {
     },
     // 级联选择器变化,触发函数
     async handleChange () {
+      this.getParamsData()
+    },
+    // tabs切换
+    handleClick (tab, event) {
+      console.log(tab, event)
+      this.getParamsData()
+    },
+    // 获取参数的列表数据
+    async getParamsData () {
       // 实现只有在是三级分类的时候才能够被选择，否则就被清空
       if (this.selectedCateKeys.length !== 3) {
         this.selectedCateKeys = []
@@ -102,10 +111,6 @@ export default {
       //   console.log(res)
       if (res.meta.status !== 200) this.$message.error('获取参数列表失败')
       this.$message.success('获取参数列表成功')
-    },
-    // tabs切换
-    handleClick (tab, event) {
-      console.log(tab, event)
     }
 
   }
