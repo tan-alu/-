@@ -34,7 +34,13 @@
                       >添加参数</el-button>
                     <!-- 动态参数表格 -->
                     <el-table :data="manyTable" border stripe>
-                      <el-table-column type="expand"></el-table-column>
+                      <el-table-column type="expand">
+                        <template slot-scope="scope">
+                          <el-tag v-for="(item,i) in scope.row.attr_vals"
+                            :key="i"
+                            closable>{{item}}</el-tag>
+                        </template>
+                      </el-table-column>
                       <el-table-column type="index"></el-table-column>
                       <el-table-column label="参数名称" prop="attr_name"></el-table-column>
                       <el-table-column label="操作">
@@ -249,7 +255,7 @@ export default {
       this.$message.success('获取参数列表成功')
       // 遍历
       res.data.forEach(item => {
-        item.attr_vals = item.attr_vals.split(',')
+        item.attr_vals = item.attr_vals ? item.attr_vals.split(',') : []
         // console.log(item.attr_vals.split(','))
       })
       if (this.activeName === 'many') {
@@ -360,5 +366,8 @@ export default {
 }
 .el-tabs{
     margin-top:15px;
+}
+.el-tag{
+  margin: 20px;
 }
 </style>
