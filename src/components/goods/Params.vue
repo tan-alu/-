@@ -43,7 +43,7 @@
                             type="primary"
                             icon="el-icon-edit"
                             size="mini"
-                            @click="edit(scope.row.id)"
+                            @click="editDialog(scope.row.attr_id)"
                           >编辑</el-button>
                           <el-button
                             type="danger"
@@ -68,7 +68,7 @@
                             type="primary"
                             icon="el-icon-edit"
                             size="mini"
-                            @click="edit(scope.row.id)"
+                            @click="editDialog(scope.row.attr_id)"
                           >编辑</el-button>
                           <el-button
                             type="danger"
@@ -89,7 +89,7 @@
           @close="addParamsClosed"
          >
           <el-form
-            v-model="addParamsForm"
+            :model="addParamsForm"
             ref="addParamsFormRef"
             :rules="addParamsFormRules"
             label-width="80px"
@@ -100,7 +100,29 @@
           </el-form>
           <span slot="footer" class="dialog-footer">
             <el-button @click="addParamsDialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="addParamsDialogVisible = false">确 定</el-button>
+            <el-button type="primary" @click="addParamsSure">确 定</el-button>
+          </span>
+        </el-dialog>
+        <!-- 修改参数对话框 -->
+        <el-dialog
+          :title="'修改'+titleText"
+          :visible.sync="editParamsDialogVisible"
+          width="50%"
+          @close="editParamsClosed"
+         >
+          <el-form
+            :model="editParamsForm"
+            ref="editParamsFormRef"
+            :rules="editParamsFormRules"
+            label-width="80px"
+            >
+            <el-form-item :label="titleText" prop="attr_name">
+              <el-input v-model="editParamsForm.attr_name"></el-input>
+            </el-form-item>
+          </el-form>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="editParamsDialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="editParams">确 定</el-button>
           </span>
         </el-dialog>
     </div>
@@ -129,7 +151,9 @@ export default {
       // 添加动态参数对话框
       addParamsDialogVisible: false,
       // 动态表单的数据
-      addParamsForm: {},
+      addParamsForm: {
+        attr_name: ''
+      },
       // 动态表单的数据规则
       addParamsFormRules: {
         attr_name: [
@@ -137,11 +161,22 @@ export default {
             message: '请输入参数名称',
             trigger: 'blur' }]
 
+      },
+      // 编辑页面对话框
+      editParamsDialogVisible: false,
+      // 编辑页面数据
+      editParamsForm: {},
+      // 规则
+      editParamsFormRules: {
+        attr_name: [
+          { required: true,
+            message: '请输入参数名称',
+            trigger: 'blur' }]
       }
 
     }
   },
-  mounted () {
+  created () {
     this.getList()
   },
   computed: {
@@ -217,6 +252,64 @@ export default {
     addParamsClosed () {
       // 关闭之后重置
       this.$refs.addParamsFormRef.resetFields()
+    },
+    // 点击按钮，添加参数
+    addParamsSure () {
+      // 表单数据预验证
+      this.$refs.addParamsFormRef.validate(async valid => {
+        // console.log(valid)
+        if (!valid) return
+        // 发起请求
+        // 级联选择框，选择的id
+        const { data: res } = await this.$http.post(`categories/${this.cateId}/attributes`,
+          { params: {
+            attr_name: this.addParamsForm.attr_name,
+            attr_sel: this.activeName
+          } })
+        // console.log(res)
+        if (res.meta.status !== 201) {
+          return this.$message.error('失败')
+        }
+        this.$message.error('成功')
+      })
+    },
+    // 点击编辑按钮，弹出对话框
+    async editDialog (attrId) {
+      // 查询当前参数的信息
+      const { data: res } =
+      await this.$http.get(`categories/${this.cateId}/attributes/${attrId}`, {
+        attr_name: this.editParamsForm.attr_name,
+        attr_sel: this.activeName
+      })
+      if (res.meta.status !== 200) {
+        return this.$message.error('获取参数信息失败')
+      }
+      this.$message.success('获取参数信息成功')
+      this.editParamsForm = res.data
+      this.editParamsDialogVisible = true
+    },
+    // 关闭编辑对话框页面，重置表单数据
+    editParamsClosed () {
+      // 重置表单数据
+      this.$refs.editParamsFormRef.resetFields()
+    },
+    // 点击确认，发送数据
+    editParams () {
+      this.$refs.editParamsFormRef.validate(async valid => {
+        if (!valid) return
+        const { data: res } = await this.$http.put(`categories/${this.cateId}/attributes/${this.editParamsForm.attr_id}`,
+          {
+            attr_name: this.editParamsForm.attr_name,
+            attr_sel: this.activeName
+          }
+        )
+        if (res.meta.status !== 200) {
+          return this.$message.error('获取参数信息失败')
+        }
+        this.$message.success('获取参数信息成功')
+        this.getList()
+        this.editParamsDialogVisible = false
+      })
     }
 
   }
