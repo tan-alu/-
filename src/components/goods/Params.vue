@@ -60,7 +60,13 @@
                     <el-button size="mini" :disabled="isBtnDisable" @click="addParams">添加属性</el-button>
                     <!-- 静态参数表格 -->
                     <el-table :data="onlyTable" border stripe>
-                      <el-table-column type="expand"></el-table-column>
+                      <el-table-column type="expand">
+                        <template slot-scope="scope">
+                          <el-tag v-for="(item,i) in scope.row.attr_vals"
+                            :key="i"
+                            closable>{{item}}</el-tag>
+                        </template>
+                      </el-table-column>
                       <el-table-column type="index"></el-table-column>
                       <el-table-column label="属性名称" prop="attr_name"></el-table-column>
                       <el-table-column label="操作">
@@ -237,9 +243,15 @@ export default {
       // 根据所选分类Id获取当前参数
       const { data: res } = await this.$http.get(`categories/${this.cateId}/attributes`,
         { params: { sel: this.activeName } })
-      //   console.log(res)
+      // console.log(res)
+
       if (res.meta.status !== 200) this.$message.error('获取参数列表失败')
       this.$message.success('获取参数列表成功')
+      // 遍历
+      res.data.forEach(item => {
+        item.attr_vals = item.attr_vals.split(',')
+        // console.log(item.attr_vals.split(','))
+      })
       if (this.activeName === 'many') {
         this.manyTable = res.data
       } else {
@@ -334,7 +346,7 @@ export default {
         return this.$message.error('删除参数信息失败')
       }
       this.$message.success('删除参数信息成功')
-      this.getList()
+      this.getParamsData()
     }
 
   }
