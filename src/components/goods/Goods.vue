@@ -12,8 +12,8 @@
         <!-- 添加商品搜索功能 -->
         <el-row :gutter="20">
           <el-col :span="10">
-            <el-input placeholder="请输入内容" >
-              <el-button slot="append" icon="el-icon-search"></el-button>
+            <el-input placeholder="请输入内容" v-model="queryInfo.query" clearable @clear="getList">
+              <el-button slot="append" icon="el-icon-search" @click="getList" ></el-button>
             </el-input>
           </el-col>
           <el-col :span="8">
