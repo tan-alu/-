@@ -39,7 +39,8 @@
                           <!-- 渲染循环出来的数据 -->
                           <el-tag v-for="(item,i) in scope.row.attr_vals"
                             :key="i"
-                            closable>{{item}}</el-tag>
+                            closable
+                            @close="handleClose(i,scope.row)">{{item}}</el-tag>
                             <!-- New Tag -->
                             <el-input
                               class="input-new-tag"
@@ -375,7 +376,7 @@ export default {
       this.getParamsData()
     },
     // 文本框失去焦点，或者按了enter之后触发
-    async handleInputConfirm (row) {
+    handleInputConfirm (row) {
       // console.log(11)
       // let inputValue = this.inputValue
       // if (inputValue) {
@@ -390,6 +391,10 @@ export default {
       row.attr_vals.push(row.inputValue.trim())
       row.inputValue = ''
       row.inputVisible = false
+      this.saveAttrVal(row)
+    },
+    // 将对attr_vals保存到数据库里
+    async saveAttrVal (row) {
       // 发起请求，保存操作
       const { data: res } = await this.$http.put(`categories/${this.cateId}/attributes/${row.attr_id}`, {
         attr_name: row.attr_name,
@@ -409,6 +414,11 @@ export default {
       this.$nextTick(_ => {
         this.$refs.saveTagInput.$refs.input.focus()
       })
+    },
+    // 删除对应的参数操作
+    handleClose (i, row) {
+      row.attr_vals.splice(i, 1)
+      this.saveAttrVal(row)
     }
 
   }
