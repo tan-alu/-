@@ -32,10 +32,9 @@
           <el-table-column label="商品数量" prop="goods_weight" width="70px"></el-table-column>
           <el-table-column label="创建时间" prop="add_time" width="140px"></el-table-column>
           <el-table-column label="操作" width="130px">
-            <template >
+            <template slot-scope="scope">
               <el-button size="mini" type="primary" icon="el-icon-edit"></el-button>
-              <el-button size="mini" type="danger" icon="el-icon-delete"></el-button>
-
+              <el-button size="mini" type="danger" icon="el-icon-delete"  @click="deleteGoods(scope.row.goods_id)"></el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -79,7 +78,7 @@ export default {
     // 商品列表数据
     async getList () {
       const { data: res } = await this.$http.get('goods', { params: this.queryInfo })
-      console.log(res)
+      // console.log(res)
       if (res.meta.status !== 200) {
         return this.$message.error('获取商品列表失败')
       }
@@ -97,6 +96,25 @@ export default {
     handleCurrentChange (val) {
       // console.log(`当前页: ${val}`)
       this.queryInfo.pagenum = val
+      this.getList()
+    },
+    // 根据Id删除对应的商品
+    async deleteGoods (id) {
+      // console.log(1)
+      const result = await this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).catch(err => err)
+      // console.log(result)
+      if (result !== 'confirm') {
+        return this.$message.info('取消删除')
+      }
+      const { data: res } = await this.$http.delete(`goods/${id}`)
+      if (res.meta.status !== 200) {
+        return this.$message.error('删除失败')
+      }
+      this.$message.success('删除成功')
       this.getList()
     }
 
