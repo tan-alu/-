@@ -17,7 +17,7 @@
             </el-input>
           </el-col>
           <el-col :span="8">
-             <el-button>添加商品</el-button>
+             <el-button @click="goAddpage">添加商品</el-button>
           </el-col>
         </el-row>
         <!-- 表格数据开始 -->
@@ -116,6 +116,10 @@ export default {
       }
       this.$message.success('删除成功')
       this.getList()
+    },
+    // 添加商品通过编程时导航跳转到新页面
+    goAddpage () {
+      this.$router.push('/goods/add')
     }
 
   }
