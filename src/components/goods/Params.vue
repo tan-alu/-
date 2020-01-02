@@ -43,8 +43,8 @@
                             <!-- New Tag -->
                             <el-input
                               class="input-new-tag"
-                              v-if="inputVisible"
-                              v-model="inputValue"
+                              v-if="scope.row.inputVisible"
+                              v-model="scope.row.inputValue"
                               ref="saveTagInput"
                               size="small"
                               @keyup.enter.native="handleInputConfirm"
@@ -54,7 +54,7 @@
                             <el-button
                               v-else class="button-new-tag"
                               size="small"
-                              @click="showInput">+ New Tag</el-button>
+                              @click="showInput(scope.row)">+ New Tag</el-button>
                         </template>
                       </el-table-column>
                       <el-table-column type="index"></el-table-column>
@@ -202,10 +202,7 @@ export default {
           { required: true,
             message: '请输入参数名称',
             trigger: 'blur' }]
-      },
-      // New Tag 切换形式
-      inputVisible: false,
-      inputValue: ''
+      }
 
     }
   },
@@ -276,6 +273,10 @@ export default {
       res.data.forEach(item => {
         item.attr_vals = item.attr_vals ? item.attr_vals.split(',') : []
         // console.log(item.attr_vals.split(','))
+        // 控制文本框的显示与隐藏
+        item.inputVisible = false
+        // 文本框中输入的字
+        item.value = ''
       })
       if (this.activeName === 'many') {
         this.manyTable = res.data
@@ -384,8 +385,8 @@ export default {
       // this.inputValue = ''
     },
     // 点击输入文本框
-    showInput () {
-      this.inputVisible = true
+    showInput (row) {
+      row.inputVisible = true
     }
 
   }
