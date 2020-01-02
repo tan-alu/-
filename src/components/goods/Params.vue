@@ -47,8 +47,8 @@
                               v-model="scope.row.inputValue"
                               ref="saveTagInput"
                               size="small"
-                              @keyup.enter.native="handleInputConfirm"
-                              @blur="handleInputConfirm"
+                              @keyup.enter.native="handleInputConfirm(scope.row)"
+                              @blur="handleInputConfirm(scope.row)"
                             >
                             </el-input>
                             <el-button
@@ -375,18 +375,26 @@ export default {
       this.getParamsData()
     },
     // 文本框失去焦点，或者按了enter之后触发
-    handleInputConfirm () {
-      console.log(11)
+    handleInputConfirm (row) {
+      // console.log(11)
       // let inputValue = this.inputValue
       // if (inputValue) {
       //   this.dynamicTags.push(inputValue)
       // }
-      // this.inputVisible = false
-      // this.inputValue = ''
+      if (row.inputValue.trim().length === 0) {
+        row.inputValue = ''
+        row.inputVisible = false
+      }
+      // 如果没return 则证明输入的内容，需要做后续处理
     },
     // 点击输入文本框
     showInput (row) {
       row.inputVisible = true
+      // 让文本框自动获得焦点
+      // $nextTick方法：当页面上的元素被重新渲染之后，才会制定回调函数中的代码
+      this.$nextTick(_ => {
+        this.$refs.saveTagInput.$refs.input.focus()
+      })
     }
 
   }
