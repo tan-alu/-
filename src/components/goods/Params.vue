@@ -375,7 +375,7 @@ export default {
       this.getParamsData()
     },
     // 文本框失去焦点，或者按了enter之后触发
-    handleInputConfirm (row) {
+    async handleInputConfirm (row) {
       // console.log(11)
       // let inputValue = this.inputValue
       // if (inputValue) {
@@ -384,8 +384,22 @@ export default {
       if (row.inputValue.trim().length === 0) {
         row.inputValue = ''
         row.inputVisible = false
+        return
       }
       // 如果没return 则证明输入的内容，需要做后续处理
+      row.attr_vals.push(row.inputValue.trim())
+      row.inputValue = ''
+      row.inputVisible = false
+      // 发起请求，保存操作
+      const { data: res } = await this.$http.put(`categories/${this.cateId}/attributes/${row.attr_id}`, {
+        attr_name: row.attr_name,
+        attr_sel: row.attr_sel,
+        attr_vals: row.attr_vals.join(',')
+      })
+      if (res.meta.status !== 200) {
+        return this.$message.error('修改参数失败')
+      }
+      this.$message.success('修改参数成功')
     },
     // 点击输入文本框
     showInput (row) {
