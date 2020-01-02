@@ -85,9 +85,25 @@
                     <el-table :data="onlyTable" border stripe>
                       <el-table-column type="expand">
                         <template slot-scope="scope">
+                          <!-- 循环数据 -->
                           <el-tag v-for="(item,i) in scope.row.attr_vals"
                             :key="i"
                             closable>{{item}}</el-tag>
+                            <!-- New Tag -->
+                            <el-input
+                              class="input-new-tag"
+                              v-if="scope.row.inputVisible"
+                              v-model="scope.row.inputValue"
+                              ref="saveTagInput"
+                              size="small"
+                              @keyup.enter.native="handleInputConfirm(scope.row)"
+                              @blur="handleInputConfirm(scope.row)"
+                            >
+                            </el-input>
+                            <el-button
+                              v-else class="button-new-tag"
+                              size="small"
+                              @click="showInput(scope.row)">+ New Tag</el-button>
                         </template>
                       </el-table-column>
                       <el-table-column type="index"></el-table-column>
