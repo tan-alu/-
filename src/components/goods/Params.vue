@@ -36,9 +36,25 @@
                     <el-table :data="manyTable" border stripe>
                       <el-table-column type="expand">
                         <template slot-scope="scope">
+                          <!-- 渲染循环出来的数据 -->
                           <el-tag v-for="(item,i) in scope.row.attr_vals"
                             :key="i"
                             closable>{{item}}</el-tag>
+                            <!-- New Tag -->
+                            <el-input
+                              class="input-new-tag"
+                              v-if="inputVisible"
+                              v-model="inputValue"
+                              ref="saveTagInput"
+                              size="small"
+                              @keyup.enter.native="handleInputConfirm"
+                              @blur="handleInputConfirm"
+                            >
+                            </el-input>
+                            <el-button
+                              v-else class="button-new-tag"
+                              size="small"
+                              @click="showInput">+ New Tag</el-button>
                         </template>
                       </el-table-column>
                       <el-table-column type="index"></el-table-column>
@@ -186,7 +202,10 @@ export default {
           { required: true,
             message: '请输入参数名称',
             trigger: 'blur' }]
-      }
+      },
+      // New Tag 切换形式
+      inputVisible: false,
+      inputValue: ''
 
     }
   },
@@ -353,6 +372,20 @@ export default {
       }
       this.$message.success('删除参数信息成功')
       this.getParamsData()
+    },
+    // 文本框失去焦点，或者按了enter之后触发
+    handleInputConfirm () {
+      console.log(11)
+      // let inputValue = this.inputValue
+      // if (inputValue) {
+      //   this.dynamicTags.push(inputValue)
+      // }
+      // this.inputVisible = false
+      // this.inputValue = ''
+    },
+    // 点击输入文本框
+    showInput () {
+      this.inputVisible = true
     }
 
   }
@@ -368,6 +401,9 @@ export default {
     margin-top:15px;
 }
 .el-tag{
-  margin: 20px;
+  margin: 10px;
+}
+.input-new-tag{
+  width: 120px;
 }
 </style>
