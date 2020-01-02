@@ -28,10 +28,10 @@
           stripe>
           <el-table-column type="index"></el-table-column>
           <el-table-column label="商品名称" prop="goods_name"></el-table-column>
-          <el-table-column label="商品价格（元）" prop="goods_price"></el-table-column>
-          <el-table-column label="商品数量" prop="goods_weight"></el-table-column>
-          <el-table-column label="创建时间" prop="upd_time"></el-table-column>
-          <el-table-column label="操作">
+          <el-table-column label="商品价格（元）" prop="goods_price" width="95px"></el-table-column>
+          <el-table-column label="商品数量" prop="goods_weight" width="70px"></el-table-column>
+          <el-table-column label="创建时间" prop="add_time" width="140px"></el-table-column>
+          <el-table-column label="操作" width="130px">
             <template >
               <el-button size="mini" type="primary" icon="el-icon-edit"></el-button>
               <el-button size="mini" type="danger" icon="el-icon-delete"></el-button>
@@ -44,10 +44,12 @@
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
+          :current-page="queryInfo.pagenum"
           :page-sizes="[1, 2, 5, 10]"
-          :page-size="10"
+          :page-size="queryInfo.pagesize"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="total">
+          :total="total"
+          background>
         </el-pagination>
       </el-card>
     </div>
@@ -64,7 +66,7 @@ export default {
         // 当前页数
         'pagenum': 1,
         // 当前显示多少条
-        'pagesize': 2
+        'pagesize': 10
       },
       total: 0
 
@@ -86,11 +88,16 @@ export default {
       this.goodList = res.data.goods
       this.total = res.data.total
     },
+
     handleSizeChange (val) {
-      console.log(`每页 ${val} 条`)
+      // console.log(`每页 ${val} 条`)
+      this.queryInfo.pagesize = val
+      this.getList()
     },
     handleCurrentChange (val) {
-      console.log(`当前页: ${val}`)
+      // console.log(`当前页: ${val}`)
+      this.queryInfo.pagenum = val
+      this.getList()
     }
 
   }
