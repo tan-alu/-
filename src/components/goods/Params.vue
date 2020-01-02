@@ -260,6 +260,8 @@ export default {
       // 实现只有在是三级分类的时候才能够被选择，否则就被清空
       if (this.selectedCateKeys.length !== 3) {
         this.selectedCateKeys = []
+        this.manyTable = []
+        this.onlyTable = []
         return
       }
       //   console.log(this.selectedCateKeys)
