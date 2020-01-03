@@ -43,6 +43,14 @@
                         <el-form-item label="商品数量" prop="goods_number">
                             <el-input v-model="addForm.goods_number"></el-input>
                         </el-form-item>
+                        <el-form-item label="商品分类" prop="goods_cat">
+                            <el-cascader
+                                expand-trigger="hover"
+                                v-model="addForm.goods_cat"
+                                :options="cateList"
+                                :props="cateProps"
+                                @change="handleChange"></el-cascader>
+                        </el-form-item>
                     </el-tab-pane>
                     <el-tab-pane label="商品参数" name="1">商品参数</el-tab-pane>
                     <el-tab-pane label="商品属性" name="2">商品属性</el-tab-pane>
@@ -65,16 +73,24 @@ export default {
         goods_name: '',
         goods_price: 0,
         goods_weight: 0,
-        goods_number: 0
+        goods_number: 0,
+        // 商品所属的分类数组
+        goods_cat: []
       },
       addFormRules: {
         goods_name: [{ required: true, message: '请输入商品名称', trigger: 'blur' }],
         goods_price: [{ required: true, message: '请输入商品价格', trigger: 'blur' }],
         goods_weight: [{ required: true, message: '请输入商品重量', trigger: 'blur' }],
-        goods_number: [{ required: true, message: '请输入商品数量', trigger: 'blur' }]
+        goods_number: [{ required: true, message: '请输入商品数量', trigger: 'blur' }],
+        goods_cat: [{ required: true, message: '请选择商品分类', trigger: 'blur' }]
       },
       // 商品分类数据
-      cateList: []
+      cateList: [],
+      cateProps: {
+        label: 'cat_name',
+        value: 'cat_id',
+        children: 'children'
+      }
     }
   },
   created () {
@@ -87,7 +103,13 @@ export default {
       if (res.meta.status !== 200) {
         return this.$message.error('获取商品分类数据失败')
       }
+      this.$message.success('获取商品分类数据成功')
       this.cateList = res.data
+      console.log(this.cateList)
+    },
+    // 级联选择器选中项变化，会触发函数
+    handleChange () {
+      console.log(this.addForm.goods_cat)
     }
   }
 
