@@ -29,7 +29,7 @@
             </el-steps>
             <!-- tab栏区域 -->
             <el-form v-model="addForm" :rules="addFormRules" ref="ruleForm" label-width="80px" label-position="top">
-                <el-tabs :tab-position="'left'"  v-model="activeIndex">
+                <el-tabs :tab-position="'left'"  v-model="activeIndex" :before-leave="beforeTabLeave">
                     <el-tab-pane label="基本信息" name="0">
                         <el-form-item label="商品名称" prop="goods_name">
                             <el-input v-model="addForm.goods_name"></el-input>
@@ -105,7 +105,7 @@ export default {
       }
       this.$message.success('获取商品分类数据成功')
       this.cateList = res.data
-      console.log(this.cateList)
+    //   console.log(this.cateList)
     },
     // 级联选择器选中项变化，会触发函数
     handleChange () {
@@ -113,6 +113,15 @@ export default {
       if (this.addForm.goods_cat.length !== 3) {
         this.addForm.goods_cat = []
       }
+    },
+    beforeTabLeave (activeName, oldActiveName) {
+      console.log('即将离开的标签名字' + oldActiveName)
+      console.log('即将进入的标签页名字' + activeName)
+      //   return false
+      //   根据条件阻止切换
+      if (oldActiveName === '0' && this.addForm.goods_cat !== 3) {
+        this.$message.error('请先选择商品分类')
+      } return false
     }
   }
 
