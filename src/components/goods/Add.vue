@@ -55,7 +55,22 @@
                                 @change="handleChange"></el-cascader>
                         </el-form-item>
                     </el-tab-pane>
-                    <el-tab-pane label="商品参数" name="1">商品参数</el-tab-pane>
+                    <el-tab-pane label="商品参数" name="1">
+                        <!-- 渲染表单的Item项 -->
+                        <el-form-item :label="item.attr_name"
+                            v-for="item in manyTableData"
+                            :key="item.attr_id">
+                            <!-- 多选框 -->
+                              <el-checkbox-group
+                                v-model="item.attr_vals"
+                                >
+                                <el-checkbox :label="cb"
+                                v-for="(cb,i) in item.attr_vals"
+                                :key="i"
+                                border></el-checkbox>
+                            </el-checkbox-group>
+                        </el-form-item>
+                    </el-tab-pane>
                     <el-tab-pane label="商品属性" name="2">商品属性</el-tab-pane>
                     <el-tab-pane label="商品图片" name="3">商品图片</el-tab-pane>
                     <el-tab-pane label="商品内容" name="4">商品内容</el-tab-pane>
@@ -129,8 +144,8 @@ export default {
     },
     // 根据条件阻止tab进行切换
     beforeTabLeave (activeName, oldActiveName) {
-      console.log('即将离开的标签名字' + oldActiveName)
-      console.log('即将进入的标签页名字' + activeName)
+    //   console.log('即将离开的标签名字' + oldActiveName)
+    //   console.log('即将进入的标签页名字' + activeName)
       //   return false
       //   根据条件阻止切换
       if (oldActiveName === '0' && this.addForm.goods_cat.length !== 3) {
@@ -140,8 +155,8 @@ export default {
     },
     // tab栏切换
     async tabClicked () {
-    //   console.log(this.activeIndex)
-    // 证明访问的是动态参数面板
+      //   console.log(this.activeIndex)
+      // 证明访问的是动态参数面板
       if (this.activeIndex === '1') {
         // console.log('动态参数面板')
         const { data: res } = await this.$http.get(`categories/${this.cateId}/attributes`, {
@@ -150,7 +165,11 @@ export default {
         if (res.meta.status !== 200) {
           return this.$message.error('获取动态参数列表失败')
         }
-        console.log(res.data)
+        // console.log(res.data)
+        res.data.forEach(item => {
+          item.attr_vals =
+          item.attr_vals.length === 0 ? [] : item.attr_vals.split(',')
+        })
         this.manyTableData = res.data
       }
     }
